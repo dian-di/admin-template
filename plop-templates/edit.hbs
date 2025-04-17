@@ -1,0 +1,20 @@
+import ZodForm from '@/components/zodForm'
+import { {{pascalCase modelName}}CreateSchema } from '@/shared/zod/{{pascalCase modelName}}Schema'
+import { Edit, useForm } from '@refinedev/antd'
+import { Form, Input } from 'antd'
+
+export const {{pascalCase modelName}}Edit = () => {
+  const { formProps, saveButtonProps } = useForm({})
+
+  return (
+    <Edit saveButtonProps={saveButtonProps}>
+      <ZodForm zodSchema={ {{pascalCase modelName}}CreateSchema } {...formProps} layout="vertical">
+        {{#each fields}}
+        <Form.Item label="{{name}}" name="{{name}}">
+          <Input placeholder="请输入{{name}}" />
+        </Form.Item>
+        {{/each}}
+      </ZodForm>
+    </Edit>
+  )
+}

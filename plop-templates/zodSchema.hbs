@@ -1,0 +1,11 @@
+import { {{pascalCase modelName}}Schema } from '../@generated/zod/modelSchema/{{pascalCase modelName}}Schema'
+
+// 创建时使用的 Schema（省略部分字段）
+const {{pascalCase modelName}}CreateSchema = {{pascalCase modelName}}Schema.omit({
+  id: true,
+  uuid: true,
+  createdAt: true,
+  updatedAt: true,
+})
+
+export { {{pascalCase modelName}}Schema, {{pascalCase modelName}}CreateSchema }

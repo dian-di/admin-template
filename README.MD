@@ -1,48 +1,37 @@
-# admin-template-1
-
-<div align="center" style="margin: 30px;">
-    <a href="https://refine.dev">
-    <img alt="refine logo" src="https://refine.ams3.cdn.digitaloceanspaces.com/readme/refine-readme-banner.png">
-    </a>
-</div>
-<br/>
-
-This [Refine](https://github.com/refinedev/refine) project was generated with [create refine-app](https://github.com/refinedev/refine/tree/master/packages/create-refine-app).
-
 ## Getting Started
 
-A React Framework for building internal tools, admin panels, dashboards & B2B apps with unmatched flexibility ✨
+1. Create model in `prisma/schema`
+2. `pnpm format-prisma`
+3. Apply database migrations: `npx prisma migrate dev --name {name}` 
+4. Generate zod: `pnpm prisma generate`
+5. 引用generated zod, 创建form zod(文件夹`shared/zod`)
 
-Refine's hooks and components simplifies the development process and eliminates the repetitive tasks by providing industry-standard solutions for crucial aspects of a project, including authentication, access control, routing, networking, state management, and i18n.
+如仅本地开发，数据库不同步到supabase；则第3条变更为：
+- 1. 运行`dotenv -e .env -- npx prisma migrate dev --create-only`
+- 2. `grant.sql`里的内容追加到`migration.sql`
+- 3. 运行`prisma migrate dev`
+[参考链接](https://supabase.com/partners/integrations/prisma#troubleshooting)
 
-## Available Scripts
-
-### Running the development server.
-
-```bash
-    pnpm dev
+### FAQ
+1. 如遇到接口返回
 ```
-
-### Building for production.
-
-```bash
-    pnpm build
+{
+    "code": "42501",
+    "details": null,
+    "hint": null,
+    "message": "permission denied for schema public"
+}
 ```
+则在http://localhost:54323/project/default/sql/1 sql编辑器里执行 grant.sql里的内容，之后重试接口
 
-### Running the production server.
-
-```bash
-    pnpm start
-```
-
-## Learn More
+2. 如遇updated_at未更新，则
+则在http://localhost:54323/project/default/sql/1 sql编辑器里执行 grant.sql里的`create trigger handle_updated_at `这一行，之后重试接口
 
 To learn more about **Refine**, please check out the [Documentation](https://refine.dev/docs)
 
-- **Supabase Data Provider** [Docs](https://refine.dev/docs/core/providers/data-provider/#overview)
+- **REST Data Provider** [Docs](https://refine.dev/docs/core/providers/data-provider/#overview)
 - **Ant Design** [Docs](https://refine.dev/docs/ui-frameworks/antd/tutorial/)
 - **React Router** [Docs](https://refine.dev/docs/core/providers/router-provider/)
 
-## License
 
-MIT
+<!-- 终端输入的名字为schema的文件名，并且文件名需要和里面的model的名字一致 -->

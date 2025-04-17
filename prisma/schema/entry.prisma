@@ -1,0 +1,22 @@
+enum Status {
+  Uninitialized
+  InProgress
+  Completed
+
+  @@map("status")
+}
+
+model Entry {
+  id             Int      @id @default(autoincrement())
+  subProjectUuid String   @default(dbgenerated("gen_random_uuid()")) @map("sub_project_uuid") @db.Uuid
+  url            String
+  title          String
+  description    String?
+  status         Status   @default(Uninitialized)
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@unique([subProjectUuid, url])
+  @@index([subProjectUuid], map: "idx_entry_sub_project")
+  @@map("entry")
+}

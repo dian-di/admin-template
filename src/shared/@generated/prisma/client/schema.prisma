@@ -1,0 +1,50 @@
+enum Status {
+  Uninitialized
+  InProgress
+  Completed
+
+  @@map("status")
+}
+
+model Entry {
+  id             Int      @id @default(autoincrement())
+  subProjectUuid String   @default(dbgenerated("gen_random_uuid()")) @map("sub_project_uuid") @db.Uuid
+  url            String
+  title          String
+  description    String?
+  status         Status   @default(Uninitialized)
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @default(now()) @updatedAt @map("updated_at")
+
+  @@unique([subProjectUuid, url])
+  @@index([subProjectUuid], map: "idx_entry_sub_project")
+  @@map("entry")
+}
+
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../../src/shared/@generated/prisma/client"
+  previewFeatures = ["prismaSchemaFolder"]
+}
+
+datasource db {
+  provider = "postgresql" // 数据库类型
+  url      = env("DATABASE_URL") // 数据库连接URL
+}
+
+generator zod {
+  provider                  = "zod-prisma-types"
+  useMultipleFiles          = true
+  output                    = "../../src/shared/@generated/zod"
+  writeBarrelFiles          = false // default is true
+  createInputTypes          = false // default is true
+  createModelTypes          = true // default is true
+  addInputTypeValidation    = false // default is true
+  addIncludeType            = false // default is true
+  addSelectType             = false // default is true
+  validateWhereUniqueInput  = false // default is true
+  createRelationValuesTypes = true // default is false
+  useDefaultValidators      = true // default is true
+  coerceDate                = false // default is true
+  writeNullishInModelTypes  = true
+}

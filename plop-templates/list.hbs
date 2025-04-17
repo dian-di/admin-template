@@ -1,0 +1,57 @@
+import type { FieldConfig } from '@/@types/global'
+import TableSimple from '@/components/TableSimple'
+import { List, useTable } from '@refinedev/antd'
+{{#if keys.searchKeys.length}}
+import type { {{pascalCase modelName}} } from '@/shared/@generated/zod/modelSchema/{{pascalCase modelName}}Schema'
+import type { HttpError } from '@refinedev/core'
+import { Button, Form, Input, Space } from 'antd'
+{{/if}}
+
+{{#if keys.searchKeys.length}}
+interface ISearch {
+  {{#each keys.searchKeys}}
+  {{this}}?: string
+  {{/each}}
+}
+{{/if}}
+
+export const {{pascalCase modelName}}List: React.FC<{ fields: FieldConfig[] }> = ({ fields }) => {
+  {{#if keys.searchKeys.length}}
+  const { tableProps, searchFormProps } = useTable<{{pascalCase modelName}}, HttpError, ISearch>({
+    resource: '{{lowerCase modelName}}',
+    onSearch: (values) => {
+      return [
+        {{#each keys.searchKeys}}
+        {
+          field: '{{this}}',
+          operator: 'eq',
+          value: values.{{this}},
+        },
+        {{/each}}
+      ]
+    },
+  })
+  {{else}}
+  const { tableProps } = useTable()
+  {{/if}}
+
+  return (
+    <List>
+      {{#if keys.searchKeys.length}}
+      <Form {...searchFormProps}>
+        <Space>
+          {{#each keys.searchKeys}}
+          <Form.Item name="{{this}}">
+            <Input placeholder="Search by {{this}}" />
+          </Form.Item>
+          {{/each}}
+          <Form.Item>
+            <Button onClick={searchFormProps.form?.submit}>Search</Button>
+          </Form.Item>
+        </Space>
+      </Form>
+      {{/if}}
+      <TableSimple {...tableProps} fields={fields} />
+    </List>
+  )
+}
