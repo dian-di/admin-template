@@ -135,7 +135,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Volumes/g/dd/admin-template-1/src/shared/@generated/prisma/client",
+      "value": "/Volumes/g/dd/admin-template/src/shared/@generated/prisma/client",
       "fromEnvVar": null
     },
     "config": {
@@ -151,11 +151,11 @@ const config = {
     "previewFeatures": [
       "prismaSchemaFolder"
     ],
-    "sourceFilePath": "/Volumes/g/dd/admin-template-1/prisma/schema/schema.prisma",
+    "sourceFilePath": "/Volumes/g/dd/admin-template/prisma/schema/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../../../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../../../../.env"
   },
   "relativePath": "../../../../../prisma/schema",
@@ -165,12 +165,11 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
-  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
         "fromEnvVar": "DATABASE_URL",
-        "value": null
+        "value": "postgresql://postgres:postgres@127.0.0.1:54322/postgres"
       }
     }
   },

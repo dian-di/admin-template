@@ -1,4 +1,5 @@
 import ZodForm from '@/components/zodForm'
+import { StatusList } from '@/shared/const'
 import { EntryCreateSchema } from '@/shared/zod/EntrySchema'
 import { Edit, useForm } from '@refinedev/antd'
 import { Form, Input, Select } from 'antd'
@@ -19,15 +20,9 @@ export const EntryEdit = () => {
           <Input placeholder="请输入URL" />
         </Form.Item>
         <Form.Item label="Status" name="status">
-          <Select
-            options={[
-              { label: 'Uninitialized', value: 'Uninitialized' },
-              { label: 'InProgress', value: 'InProgress' },
-              { label: 'Completed', value: 'Completed' },
-            ]}
-          />
+          <Select options={StatusList} className="w-300" placeholder="Status" allowClear />
         </Form.Item>
-        <Form.Item label="Sub Project" name="sub_project_uuid">
+        <Form.Item label="Sub Project" name="subProjectUuid">
           <Input placeholder="请输入Sub Project id" />
         </Form.Item>
       </ZodForm>

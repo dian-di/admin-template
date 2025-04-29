@@ -63,7 +63,7 @@ export const dataProvider = (
       }
 
       return {
-        data: data.length ? toCamelCase(data) : [],
+        data: data.length ? data.map((item) => toCamelCase(item)) : [],
         total: count || 0,
       } as any
     },
@@ -195,7 +195,7 @@ export const dataProvider = (
       }
 
       return {
-        data: toSnakeCase((data || [])[0]) as any,
+        data: toCamelCase((data || [])[0]) as any,
       }
     },
 

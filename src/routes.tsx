@@ -2,7 +2,12 @@ import { ErrorComponent } from '@refinedev/antd'
 import { Outlet } from 'react-router'
 import { EntryEdit, EntryList } from './pages/entry'
 
+import { StatusMap } from '@/shared/const'
 import { EntrySchema } from '@/shared/zod/EntrySchema'
+
+const enumKeyMap = {
+  status: StatusMap,
+} as const
 
 import type { ZodObject } from 'zod'
 
@@ -13,9 +18,18 @@ function getKeysFromSchema(schema: ZodObject<any>, omitFields: string[] = omitLi
 }
 
 function geneTableFields(schema: ZodObject<any>) {
-  return getKeysFromSchema(schema).map((key) => ({
-    key,
-  }))
+  return getKeysFromSchema(schema).map((key) => {
+    const res =
+      key in enumKeyMap
+        ? {
+            key,
+            render: (text: any) => {
+              return enumKeyMap[key][text]
+            },
+          }
+        : { key }
+    return res
+  })
 }
 
 const routeList = [
