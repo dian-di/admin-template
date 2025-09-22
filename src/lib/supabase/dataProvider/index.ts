@@ -1,8 +1,7 @@
 import type { DataProvider } from '@refinedev/core'
 import type { SupabaseClient } from '@supabase/supabase-js'
-import { generateFilter, handleError } from '../utils'
-
 import camelcaseKeys from 'camelcase-keys'
+import { generateFilter, handleError } from '../utils'
 
 const mapKeys = <T>(object: Record<string, T>, cb: (value: T, key: string, obj: any) => any) =>
   Object.entries(object).reduce(
@@ -37,7 +36,7 @@ export const dataProvider = (
         query.range((currentPage - 1) * pageSize, currentPage * pageSize - 1)
       }
 
-      sorters?.map((item) => {
+      sorters?.forEach((item) => {
         const [foreignTable, field] = item.field.split(/\.(?=[^.]+$)/)
 
         if (foreignTable && field) {
@@ -52,7 +51,7 @@ export const dataProvider = (
         }
       })
 
-      filters?.map((item) => {
+      filters?.forEach((item) => {
         generateFilter(item, query)
       })
 
@@ -73,8 +72,8 @@ export const dataProvider = (
 
       const query = client.from(resource).select(meta?.select ?? '*')
 
-      const idColumn = meta?.idColumnName || 'id';
-      query.in(idColumn, ids);
+      const idColumn = meta?.idColumnName || 'id'
+      query.in(idColumn, ids)
 
       const { data, error } = await query
 

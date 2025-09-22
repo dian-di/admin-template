@@ -1,3 +1,3 @@
 export * from './generateFilter'
-export * from './mapOperator'
 export * from './handleError'
+export * from './mapOperator'

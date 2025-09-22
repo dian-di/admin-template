@@ -8,8 +8,8 @@ import routerProvider, {
 } from '@refinedev/react-router'
 import { App as AntdApp } from 'antd'
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router'
-import { dataProvider } from './lib/supabase/dataProvider'
 import { Header } from './components/header'
+import { dataProvider } from './lib/supabase/dataProvider'
 import './index.css'
 import { ColorModeContextProvider } from './contexts/color-mode'
 import resources from './resources'
@@ -38,7 +38,6 @@ const RefineProvider = () => {
       options={{
         syncWithLocation: true,
         warnWhenUnsavedChanges: true,
-        useNewQueryKeys: true,
       }}
     >
       <ThemedLayout
