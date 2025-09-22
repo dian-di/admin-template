@@ -1,4 +1,3 @@
-import { dataProvider } from '@/lib/supabase/dataProvider'
 import { DatabaseOutlined } from '@ant-design/icons'
 import { ThemedLayoutV2, ThemedSiderV2, ThemedTitleV2 } from '@refinedev/antd'
 import { Refine } from '@refinedev/core'
@@ -8,7 +7,8 @@ import routerProvider, {
   UnsavedChangesNotifier,
 } from '@refinedev/react-router'
 import { App as AntdApp } from 'antd'
-import { Outlet, RouterProvider, createBrowserRouter } from 'react-router'
+import { createBrowserRouter, Outlet, RouterProvider } from 'react-router'
+import { dataProvider } from '@/lib/supabase/dataProvider'
 import { Header } from './components/header'
 import './index.css'
 import { ColorModeContextProvider } from './contexts/color-mode'
@@ -43,7 +43,7 @@ const RefineProvider = () => {
     >
       <ThemedLayoutV2
         Title={({ collapsed }) => (
-          <ThemedTitleV2 collapsed={collapsed} icon={<DatabaseOutlined />} text="App" />
+          <ThemedTitleV2 collapsed={collapsed} icon={<DatabaseOutlined />} text='App' />
         )}
         Header={Header}
         Sider={(props) => <ThemedSiderV2 {...props} fixed />}

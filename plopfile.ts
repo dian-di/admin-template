@@ -2,9 +2,8 @@
 // ts运行命令
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import type { NodePlopAPI } from 'plop'
-
 import { camelCase, pascalCase, snakeCase } from 'change-case'
+import type { NodePlopAPI } from 'plop'
 import type { ZodObject } from 'zod'
 //  udpate your schema path here
 import { EntryCreateSchema as createSchema } from './src/shared/zod/EntrySchema'
