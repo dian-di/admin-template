@@ -25,7 +25,7 @@ export const dataProvider = (
 ): Required<DataProvider> => {
   return {
     getList: async ({ resource, pagination, filters, sorters, meta }) => {
-      const { current = 1, pageSize = 10, mode = 'server' } = pagination ?? {}
+      const { currentPage = 1, pageSize = 10, mode = 'server' } = pagination ?? {}
 
       const client = meta?.schema ? supabaseClient.schema(meta.schema) : supabaseClient
 
@@ -34,7 +34,7 @@ export const dataProvider = (
       })
 
       if (mode === 'server') {
-        query.range((current - 1) * pageSize, current * pageSize - 1)
+        query.range((currentPage - 1) * pageSize, currentPage * pageSize - 1)
       }
 
       sorters?.map((item) => {
@@ -73,11 +73,8 @@ export const dataProvider = (
 
       const query = client.from(resource).select(meta?.select ?? '*')
 
-      if (meta?.idColumnName) {
-        query.in(meta.idColumnName, ids)
-      } else {
-        query.in('id', ids)
-      }
+      const idColumn = meta?.idColumnName || 'id';
+      query.in(idColumn, ids);
 
       const { data, error } = await query
 

@@ -1,5 +1,5 @@
 import { DatabaseOutlined } from '@ant-design/icons'
-import { ThemedLayoutV2, ThemedSiderV2, ThemedTitleV2 } from '@refinedev/antd'
+import { ThemedLayout, ThemedSider, ThemedTitle } from '@refinedev/antd'
 import { Refine } from '@refinedev/core'
 import { RefineKbar, RefineKbarProvider } from '@refinedev/kbar'
 import routerProvider, {
@@ -8,7 +8,7 @@ import routerProvider, {
 } from '@refinedev/react-router'
 import { App as AntdApp } from 'antd'
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router'
-import { dataProvider } from '@/lib/supabase/dataProvider'
+import { dataProvider } from './lib/supabase/dataProvider'
 import { Header } from './components/header'
 import './index.css'
 import { ColorModeContextProvider } from './contexts/color-mode'
@@ -41,15 +41,15 @@ const RefineProvider = () => {
         useNewQueryKeys: true,
       }}
     >
-      <ThemedLayoutV2
+      <ThemedLayout
         Title={({ collapsed }) => (
-          <ThemedTitleV2 collapsed={collapsed} icon={<DatabaseOutlined />} text='App' />
+          <ThemedTitle collapsed={collapsed} icon={<DatabaseOutlined />} text='App' />
         )}
         Header={Header}
-        Sider={(props) => <ThemedSiderV2 {...props} fixed />}
+        Sider={(props) => <ThemedSider {...props} fixed />}
       >
         <Outlet />
-      </ThemedLayoutV2>
+      </ThemedLayout>
       <RefineKbar />
       {isProduction ? <UnsavedChangesNotifier /> : null}
       <DocumentTitleHandler />

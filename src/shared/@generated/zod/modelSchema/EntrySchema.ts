@@ -7,7 +7,7 @@ import { StatusSchema } from '../inputTypeSchemas/StatusSchema'
 
 export const EntrySchema = z.object({
   status: StatusSchema,
-  id: z.number().int(),
+  id: z.int(),
   subProjectUuid: z.string(),
   url: z.string(),
   title: z.string(),

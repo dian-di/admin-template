@@ -1,9 +1,9 @@
-import type { TableSimpleProps } from '@/@types/global'
 import { DeleteButton, EditButton, ShowButton } from '@refinedev/antd'
 import type { BaseRecord } from '@refinedev/core'
 import { Space, Table } from 'antd'
 import type { ColumnType } from 'antd/es/table'
 import dayjs from 'dayjs'
+import { TableSimpleProps } from '../@types/global'
 
 function dataFormat(text: string, format = 'YYYY-MM-DD HH:mm:ss') {
   if (!text) return '--'
