@@ -1,8 +1,7 @@
 // https://juejin.cn/post/7355340024533254163
-
 import { Form, type FormProps } from 'antd'
-import { createSchemaFieldRule } from 'antd-zod'
 import type { Rule } from 'antd/es/form'
+import { createSchemaFieldRule } from 'antd-zod'
 import React, { useMemo } from 'react'
 import type z from 'zod'
 
@@ -19,7 +18,7 @@ interface ChildProps {
 }
 
 function ZodForm<
-  T extends z.ZodObject<any> | z.ZodEffects<z.ZodObject<any>>,
+  T extends z.ZodType<Record<string, any>, any, any>,
   K extends (values: z.infer<T>) => void,
 >({
   zodSchema,
@@ -39,6 +38,7 @@ function ZodForm<
     return <Form {...props}>{children}</Form>
   }
 
+  // biome-ignore lint/correctness/useHookAtTopLevel: <>
   const rule = useMemo(() => {
     // 使用antd-zod库生成校验规则
     return createSchemaFieldRule(zodSchema)

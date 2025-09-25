@@ -1,26 +1,9 @@
 import type z from 'zod'
-import type { ZodTypeAny } from 'zod'
+import type { ZodType } from 'zod'
 
-export const isRequiredByFieldName = (paths: string[], schema: ZodTypeAny) => {
-  let shape: z.ZodObject<
-    any,
-    z.UnknownKeysParam,
-    z.ZodTypeAny,
-    {
-      [x: string]: any
-    },
-    {
-      [x: string]: any
-    }
-  >
-
-  if (isZodEffect(schema)) {
-    shape = schema._def.schema
-  } else if (isZodObject(schema)) {
-    shape = schema
-  } else {
-    throw new Error('schema is not ZodObject or ZodEffects')
-  }
+export const isRequiredByFieldName = (paths: string[], schema: ZodType) => {
+  let shape = unwrapToObject(schema)
+  if (!shape) throw new Error('schema is not ZodObject-like')
 
   for (const path of paths) {
     if (shape) {
@@ -32,17 +15,33 @@ export const isRequiredByFieldName = (paths: string[], schema: ZodTypeAny) => {
   return !isZodOptional(shape)
 }
 
-const isZodEffect = (schema: unknown): schema is z.ZodEffects<any> =>
-  typeof schema === 'object' &&
-  !!schema &&
-  !('shape' in schema) &&
-  '_def' in schema &&
-  typeof schema._def === 'object' &&
-  !!schema._def &&
-  'schema' in schema._def
+const unwrapToObject = (
+  input: unknown
+): z.ZodObject<any> | null => {
+  let current: any = input
+  while (typeof current === 'object' && current) {
+    if ('shape' in current) return current as z.ZodObject<any>
+    if ('unwrap' in current && typeof current.unwrap === 'function') {
+      current = current.unwrap()
+      continue
+    }
+    if ('_def' in current && current._def && typeof current._def === 'object') {
+      const def = current._def as Record<string, unknown>
+      if ('innerType' in def) {
+        current = (def as any).innerType
+        continue
+      }
+      if ('schema' in def) {
+        current = (def as any).schema
+        continue
+      }
+    }
+    break
+  }
+  return null
+}
 
 const isZodOptional = (schema: unknown): schema is z.ZodOptional<any> =>
   typeof schema === 'object' && !!schema && 'unwrap' in schema
 
-const isZodObject = (schema: unknown): schema is z.ZodObject<any> =>
-  typeof schema === 'object' && !!schema && 'shape' in schema
+// removed isZodObject (unused)

@@ -3,7 +3,7 @@ import type { BaseRecord } from '@refinedev/core'
 import { Space, Table } from 'antd'
 import type { ColumnType } from 'antd/es/table'
 import dayjs from 'dayjs'
-import { TableSimpleProps } from '../@types/global'
+import type { TableSimpleProps } from '../@types/global'
 
 function dataFormat(text: string, format = 'YYYY-MM-DD HH:mm:ss') {
   if (!text) return '--'
@@ -53,15 +53,15 @@ const TableSimple: React.FC<TableSimpleProps> = ({ fields, showActions = true, .
       dataIndex: 'actions',
       render: (_: any, record: BaseRecord) => (
         <Space>
-          <EditButton hideText size="small" recordItemId={record.id} />
-          <ShowButton hideText size="small" recordItemId={record.id} />
-          <DeleteButton hideText size="small" recordItemId={record.id} />
+          <EditButton hideText size='small' recordItemId={record.id} />
+          <ShowButton hideText size='small' recordItemId={record.id} />
+          <DeleteButton hideText size='small' recordItemId={record.id} />
         </Space>
       ),
     })
   }
 
-  return <Table {...tableProps} rowKey="id" columns={columns} />
+  return <Table {...tableProps} rowKey='id' columns={columns} />
 }
 
 export default TableSimple
