@@ -6,4 +6,4 @@ const EntryCreateSchema = EntrySchema.omit({
   updatedAt: true,
 })
 
-export { EntrySchema, EntryCreateSchema }
+export { EntryCreateSchema, EntrySchema }

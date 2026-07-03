@@ -3,7 +3,7 @@
  * Client
 **/
 
-import * as runtime from './runtime/library.js';
+import * as runtime from './runtime/client.js';
 import $Types = runtime.Types // general types
 import $Public = runtime.Types.Public
 import $Utils = runtime.Types.Utils
@@ -13,6 +13,11 @@ import $Result = runtime.Types.Result
 export type PrismaPromise<T> = $Public.PrismaPromise<T>
 
 
+/**
+ * Model Demo
+ * 
+ */
+export type Demo = $Result.DefaultSelection<Prisma.$DemoPayload>
 /**
  * Model Entry
  * 
@@ -43,17 +48,19 @@ export const Status: typeof $Enums.Status
  * Type-safe database client for TypeScript & Node.js
  * @example
  * ```
- * const prisma = new PrismaClient()
- * // Fetch zero or more Entries
- * const entries = await prisma.entry.findMany()
+ * const prisma = new PrismaClient({
+ *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+ * })
+ * // Fetch zero or more Demos
+ * const demos = await prisma.demo.findMany()
  * ```
  *
  *
- * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
+ * Read more in our [docs](https://pris.ly/d/client).
  */
 export class PrismaClient<
   ClientOptions extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions,
-  U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
+  const U = 'log' extends keyof ClientOptions ? ClientOptions['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<ClientOptions['log']> : never : never,
   ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs
 > {
   [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['other'] }
@@ -64,13 +71,15 @@ export class PrismaClient<
    * Type-safe database client for TypeScript & Node.js
    * @example
    * ```
-   * const prisma = new PrismaClient()
-   * // Fetch zero or more Entries
-   * const entries = await prisma.entry.findMany()
+   * const prisma = new PrismaClient({
+   *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
+   * })
+   * // Fetch zero or more Demos
+   * const demos = await prisma.demo.findMany()
    * ```
    *
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
+   * Read more in our [docs](https://pris.ly/d/client).
    */
 
   constructor(optionsArg ?: Prisma.Subset<ClientOptions, Prisma.PrismaClientOptions>);
@@ -86,13 +95,6 @@ export class PrismaClient<
    */
   $disconnect(): $Utils.JsPromise<void>;
 
-  /**
-   * Add a middleware
-   * @deprecated since 4.16.0. For new code, prefer client extensions instead.
-   * @see https://pris.ly/d/extensions
-   */
-  $use(cb: Prisma.Middleware): void
-
 /**
    * Executes a prepared raw query and returns the number of affected rows.
    * @example
@@ -100,7 +102,7 @@ export class PrismaClient<
    * const result = await prisma.$executeRaw`UPDATE User SET cool = ${true} WHERE email = ${'user@email.com'};`
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $executeRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<number>;
 
@@ -112,7 +114,7 @@ export class PrismaClient<
    * const result = await prisma.$executeRawUnsafe('UPDATE User SET cool = $1 WHERE email = $2 ;', true, 'user@email.com')
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $executeRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<number>;
 
@@ -123,7 +125,7 @@ export class PrismaClient<
    * const result = await prisma.$queryRaw`SELECT * FROM User WHERE id = ${1} OR email = ${'user@email.com'};`
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $queryRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<T>;
 
@@ -135,7 +137,7 @@ export class PrismaClient<
    * const result = await prisma.$queryRawUnsafe('SELECT * FROM User WHERE id = $1 OR email = $2;', 1, 'user@email.com')
    * ```
    *
-   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
+   * Read more in our [docs](https://pris.ly/d/raw-queries).
    */
   $queryRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<T>;
 
@@ -151,18 +153,27 @@ export class PrismaClient<
    * ])
    * ```
    * 
-   * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
+   * Read more in our [docs](https://www.prisma.io/docs/orm/prisma-client/queries/transactions).
    */
-  $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
+  $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<runtime.Types.Utils.UnwrapTuple<P>>
 
   $transaction<R>(fn: (prisma: Omit<PrismaClient, runtime.ITXClientDenyList>) => $Utils.JsPromise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): $Utils.JsPromise<R>
-
 
   $extends: $Extensions.ExtendsHook<"extends", Prisma.TypeMapCb<ClientOptions>, ExtArgs, $Utils.Call<Prisma.TypeMapCb<ClientOptions>, {
     extArgs: ExtArgs
   }>>
 
       /**
+   * `prisma.demo`: Exposes CRUD operations for the **Demo** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Demos
+    * const demos = await prisma.demo.findMany()
+    * ```
+    */
+  get demo(): Prisma.DemoDelegate<ExtArgs, ClientOptions>;
+
+  /**
    * `prisma.entry`: Exposes CRUD operations for the **Entry** model.
     * Example usage:
     * ```ts
@@ -211,14 +222,6 @@ export namespace Prisma {
   export type DecimalJsLike = runtime.DecimalJsLike
 
   /**
-   * Metrics
-   */
-  export type Metrics = runtime.Metrics
-  export type Metric<T> = runtime.Metric<T>
-  export type MetricHistogram = runtime.MetricHistogram
-  export type MetricHistogramBucket = runtime.MetricHistogramBucket
-
-  /**
   * Extensions
   */
   export import Extension = $Extensions.UserArgs
@@ -229,11 +232,12 @@ export namespace Prisma {
   export import Exact = $Public.Exact
 
   /**
-   * Prisma Client JS version: 6.6.0
-   * Query Engine version: f676762280b54cd07c770017ed3711ddde35f37a
+   * Prisma Client JS version: 7.8.0
+   * Query Engine version: 3c6e192761c0362d496ed980de936e2f3cebcd3a
    */
   export type PrismaVersion = {
     client: string
+    engine: string
   }
 
   export const prismaVersion: PrismaVersion
@@ -243,6 +247,7 @@ export namespace Prisma {
    */
 
 
+  export import Bytes = runtime.Bytes
   export import JsonObject = runtime.JsonObject
   export import JsonArray = runtime.JsonArray
   export import JsonValue = runtime.JsonValue
@@ -611,15 +616,13 @@ export namespace Prisma {
 
 
   export const ModelName: {
+    Demo: 'Demo',
     Entry: 'Entry'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
 
 
-  export type Datasources = {
-    db?: Datasource
-  }
 
   interface TypeMapCb<ClientOptions = {}> extends $Utils.Fn<{extArgs: $Extensions.InternalArgs }, $Utils.Record<string, any>> {
     returns: Prisma.TypeMap<this['params']['extArgs'], ClientOptions extends { omit: infer OmitOptions } ? OmitOptions : {}>
@@ -630,10 +633,84 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "entry"
+      modelProps: "demo" | "entry"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
+      Demo: {
+        payload: Prisma.$DemoPayload<ExtArgs>
+        fields: Prisma.DemoFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.DemoFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DemoPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.DemoFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DemoPayload>
+          }
+          findFirst: {
+            args: Prisma.DemoFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DemoPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.DemoFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DemoPayload>
+          }
+          findMany: {
+            args: Prisma.DemoFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DemoPayload>[]
+          }
+          create: {
+            args: Prisma.DemoCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DemoPayload>
+          }
+          createMany: {
+            args: Prisma.DemoCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.DemoCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DemoPayload>[]
+          }
+          delete: {
+            args: Prisma.DemoDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DemoPayload>
+          }
+          update: {
+            args: Prisma.DemoUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DemoPayload>
+          }
+          deleteMany: {
+            args: Prisma.DemoDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.DemoUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.DemoUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DemoPayload>[]
+          }
+          upsert: {
+            args: Prisma.DemoUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$DemoPayload>
+          }
+          aggregate: {
+            args: Prisma.DemoAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateDemo>
+          }
+          groupBy: {
+            args: Prisma.DemoGroupByArgs<ExtArgs>
+            result: $Utils.Optional<DemoGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.DemoCountArgs<ExtArgs>
+            result: $Utils.Optional<DemoCountAggregateOutputType> | number
+          }
+        }
+      }
       Entry: {
         payload: Prisma.$EntryPayload<ExtArgs>
         fields: Prisma.EntryFieldRefs
@@ -737,32 +814,32 @@ export namespace Prisma {
   export type ErrorFormat = 'pretty' | 'colorless' | 'minimal'
   export interface PrismaClientOptions {
     /**
-     * Overwrites the datasource url from your schema.prisma file
-     */
-    datasources?: Datasources
-    /**
-     * Overwrites the datasource url from your schema.prisma file
-     */
-    datasourceUrl?: string
-    /**
      * @default "colorless"
      */
     errorFormat?: ErrorFormat
     /**
      * @example
      * ```
-     * // Defaults to stdout
+     * // Shorthand for `emit: 'stdout'`
      * log: ['query', 'info', 'warn', 'error']
      * 
-     * // Emit as events
+     * // Emit as events only
      * log: [
-     *   { emit: 'stdout', level: 'query' },
-     *   { emit: 'stdout', level: 'info' },
-     *   { emit: 'stdout', level: 'warn' }
-     *   { emit: 'stdout', level: 'error' }
+     *   { emit: 'event', level: 'query' },
+     *   { emit: 'event', level: 'info' },
+     *   { emit: 'event', level: 'warn' }
+     *   { emit: 'event', level: 'error' }
      * ]
+     * 
+     * / Emit as events and log to stdout
+     * og: [
+     *  { emit: 'stdout', level: 'query' },
+     *  { emit: 'stdout', level: 'info' },
+     *  { emit: 'stdout', level: 'warn' }
+     *  { emit: 'stdout', level: 'error' }
+     * 
      * ```
-     * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
+     * Read more in our [docs](https://pris.ly/d/logging).
      */
     log?: (LogLevel | LogDefinition)[]
     /**
@@ -775,6 +852,14 @@ export namespace Prisma {
       timeout?: number
       isolationLevel?: Prisma.TransactionIsolationLevel
     }
+    /**
+     * Instance of a Driver Adapter, e.g., like one provided by `@prisma/adapter-planetscale`
+     */
+    adapter?: runtime.SqlDriverAdapterFactory
+    /**
+     * Prisma Accelerate URL allowing the client to connect through Accelerate instead of a direct database.
+     */
+    accelerateUrl?: string
     /**
      * Global configuration for omitting model fields by default.
      * 
@@ -790,8 +875,25 @@ export namespace Prisma {
      * ```
      */
     omit?: Prisma.GlobalOmitConfig
+    /**
+     * SQL commenter plugins that add metadata to SQL queries as comments.
+     * Comments follow the sqlcommenter format: https://google.github.io/sqlcommenter/
+     * 
+     * @example
+     * ```
+     * const prisma = new PrismaClient({
+     *   adapter,
+     *   comments: [
+     *     traceContext(),
+     *     queryInsights(),
+     *   ],
+     * })
+     * ```
+     */
+    comments?: runtime.SqlCommenterPlugin[]
   }
   export type GlobalOmitConfig = {
+    demo?: DemoOmit
     entry?: EntryOmit
   }
 
@@ -802,10 +904,15 @@ export namespace Prisma {
     emit: 'stdout' | 'event'
   }
 
-  export type GetLogType<T extends LogLevel | LogDefinition> = T extends LogDefinition ? T['emit'] extends 'event' ? T['level'] : never : never
-  export type GetEvents<T extends any> = T extends Array<LogLevel | LogDefinition> ?
-    GetLogType<T[0]> | GetLogType<T[1]> | GetLogType<T[2]> | GetLogType<T[3]>
-    : never
+  export type CheckIsLogLevel<T> = T extends LogLevel ? T : never;
+
+  export type GetLogType<T> = CheckIsLogLevel<
+    T extends LogDefinition ? T['level'] : T
+  >;
+
+  export type GetEvents<T extends any[]> = T extends Array<LogLevel | LogDefinition>
+    ? GetLogType<T[number]>
+    : never;
 
   export type QueryEvent = {
     timestamp: Date
@@ -846,25 +953,6 @@ export namespace Prisma {
     | 'findRaw'
     | 'groupBy'
 
-  /**
-   * These options are being passed into the middleware as "params"
-   */
-  export type MiddlewareParams = {
-    model?: ModelName
-    action: PrismaAction
-    args: any
-    dataPath: string[]
-    runInTransaction: boolean
-  }
-
-  /**
-   * The `T` type makes sure, that the `return proceed` is not forgotten in the middleware implementation
-   */
-  export type Middleware<T = any> = (
-    params: MiddlewareParams,
-    next: (params: MiddlewareParams) => $Utils.JsPromise<T>,
-  ) => $Utils.JsPromise<T>
-
   // tested in getLogLevel.test.ts
   export function getLogLevel(log: Array<LogLevel | LogDefinition>): LogLevel | undefined;
 
@@ -888,6 +976,1066 @@ export namespace Prisma {
    */
 
   /**
+   * Model Demo
+   */
+
+  export type AggregateDemo = {
+    _count: DemoCountAggregateOutputType | null
+    _avg: DemoAvgAggregateOutputType | null
+    _sum: DemoSumAggregateOutputType | null
+    _min: DemoMinAggregateOutputType | null
+    _max: DemoMaxAggregateOutputType | null
+  }
+
+  export type DemoAvgAggregateOutputType = {
+    id: number | null
+  }
+
+  export type DemoSumAggregateOutputType = {
+    id: number | null
+  }
+
+  export type DemoMinAggregateOutputType = {
+    id: number | null
+    url: string | null
+    title: string | null
+    description: string | null
+    status: $Enums.Status | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DemoMaxAggregateOutputType = {
+    id: number | null
+    url: string | null
+    title: string | null
+    description: string | null
+    status: $Enums.Status | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type DemoCountAggregateOutputType = {
+    id: number
+    url: number
+    title: number
+    description: number
+    status: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type DemoAvgAggregateInputType = {
+    id?: true
+  }
+
+  export type DemoSumAggregateInputType = {
+    id?: true
+  }
+
+  export type DemoMinAggregateInputType = {
+    id?: true
+    url?: true
+    title?: true
+    description?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DemoMaxAggregateInputType = {
+    id?: true
+    url?: true
+    title?: true
+    description?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type DemoCountAggregateInputType = {
+    id?: true
+    url?: true
+    title?: true
+    description?: true
+    status?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type DemoAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Demo to aggregate.
+     */
+    where?: DemoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Demos to fetch.
+     */
+    orderBy?: DemoOrderByWithRelationInput | DemoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: DemoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Demos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Demos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Demos
+    **/
+    _count?: true | DemoCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: DemoAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DemoSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: DemoMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: DemoMaxAggregateInputType
+  }
+
+  export type GetDemoAggregateType<T extends DemoAggregateArgs> = {
+        [P in keyof T & keyof AggregateDemo]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateDemo[P]>
+      : GetScalarType<T[P], AggregateDemo[P]>
+  }
+
+
+
+
+  export type DemoGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DemoWhereInput
+    orderBy?: DemoOrderByWithAggregationInput | DemoOrderByWithAggregationInput[]
+    by: DemoScalarFieldEnum[] | DemoScalarFieldEnum
+    having?: DemoScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: DemoCountAggregateInputType | true
+    _avg?: DemoAvgAggregateInputType
+    _sum?: DemoSumAggregateInputType
+    _min?: DemoMinAggregateInputType
+    _max?: DemoMaxAggregateInputType
+  }
+
+  export type DemoGroupByOutputType = {
+    id: number
+    url: string
+    title: string
+    description: string | null
+    status: $Enums.Status
+    createdAt: Date
+    updatedAt: Date
+    _count: DemoCountAggregateOutputType | null
+    _avg: DemoAvgAggregateOutputType | null
+    _sum: DemoSumAggregateOutputType | null
+    _min: DemoMinAggregateOutputType | null
+    _max: DemoMaxAggregateOutputType | null
+  }
+
+  type GetDemoGroupByPayload<T extends DemoGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<DemoGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof DemoGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], DemoGroupByOutputType[P]>
+            : GetScalarType<T[P], DemoGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type DemoSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    url?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["demo"]>
+
+  export type DemoSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    url?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["demo"]>
+
+  export type DemoSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    url?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }, ExtArgs["result"]["demo"]>
+
+  export type DemoSelectScalar = {
+    id?: boolean
+    url?: boolean
+    title?: boolean
+    description?: boolean
+    status?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type DemoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "url" | "title" | "description" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["demo"]>
+
+  export type $DemoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Demo"
+    objects: {}
+    scalars: $Extensions.GetPayloadResult<{
+      id: number
+      url: string
+      title: string
+      description: string | null
+      status: $Enums.Status
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["demo"]>
+    composites: {}
+  }
+
+  type DemoGetPayload<S extends boolean | null | undefined | DemoDefaultArgs> = $Result.GetResult<Prisma.$DemoPayload, S>
+
+  type DemoCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<DemoFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: DemoCountAggregateInputType | true
+    }
+
+  export interface DemoDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Demo'], meta: { name: 'Demo' } }
+    /**
+     * Find zero or one Demo that matches the filter.
+     * @param {DemoFindUniqueArgs} args - Arguments to find a Demo
+     * @example
+     * // Get one Demo
+     * const demo = await prisma.demo.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends DemoFindUniqueArgs>(args: SelectSubset<T, DemoFindUniqueArgs<ExtArgs>>): Prisma__DemoClient<$Result.GetResult<Prisma.$DemoPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Demo that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {DemoFindUniqueOrThrowArgs} args - Arguments to find a Demo
+     * @example
+     * // Get one Demo
+     * const demo = await prisma.demo.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends DemoFindUniqueOrThrowArgs>(args: SelectSubset<T, DemoFindUniqueOrThrowArgs<ExtArgs>>): Prisma__DemoClient<$Result.GetResult<Prisma.$DemoPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Demo that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DemoFindFirstArgs} args - Arguments to find a Demo
+     * @example
+     * // Get one Demo
+     * const demo = await prisma.demo.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends DemoFindFirstArgs>(args?: SelectSubset<T, DemoFindFirstArgs<ExtArgs>>): Prisma__DemoClient<$Result.GetResult<Prisma.$DemoPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Demo that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DemoFindFirstOrThrowArgs} args - Arguments to find a Demo
+     * @example
+     * // Get one Demo
+     * const demo = await prisma.demo.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends DemoFindFirstOrThrowArgs>(args?: SelectSubset<T, DemoFindFirstOrThrowArgs<ExtArgs>>): Prisma__DemoClient<$Result.GetResult<Prisma.$DemoPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Demos that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DemoFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Demos
+     * const demos = await prisma.demo.findMany()
+     * 
+     * // Get first 10 Demos
+     * const demos = await prisma.demo.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const demoWithIdOnly = await prisma.demo.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends DemoFindManyArgs>(args?: SelectSubset<T, DemoFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DemoPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Demo.
+     * @param {DemoCreateArgs} args - Arguments to create a Demo.
+     * @example
+     * // Create one Demo
+     * const Demo = await prisma.demo.create({
+     *   data: {
+     *     // ... data to create a Demo
+     *   }
+     * })
+     * 
+     */
+    create<T extends DemoCreateArgs>(args: SelectSubset<T, DemoCreateArgs<ExtArgs>>): Prisma__DemoClient<$Result.GetResult<Prisma.$DemoPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Demos.
+     * @param {DemoCreateManyArgs} args - Arguments to create many Demos.
+     * @example
+     * // Create many Demos
+     * const demo = await prisma.demo.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends DemoCreateManyArgs>(args?: SelectSubset<T, DemoCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Demos and returns the data saved in the database.
+     * @param {DemoCreateManyAndReturnArgs} args - Arguments to create many Demos.
+     * @example
+     * // Create many Demos
+     * const demo = await prisma.demo.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Demos and only return the `id`
+     * const demoWithIdOnly = await prisma.demo.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends DemoCreateManyAndReturnArgs>(args?: SelectSubset<T, DemoCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DemoPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Demo.
+     * @param {DemoDeleteArgs} args - Arguments to delete one Demo.
+     * @example
+     * // Delete one Demo
+     * const Demo = await prisma.demo.delete({
+     *   where: {
+     *     // ... filter to delete one Demo
+     *   }
+     * })
+     * 
+     */
+    delete<T extends DemoDeleteArgs>(args: SelectSubset<T, DemoDeleteArgs<ExtArgs>>): Prisma__DemoClient<$Result.GetResult<Prisma.$DemoPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Demo.
+     * @param {DemoUpdateArgs} args - Arguments to update one Demo.
+     * @example
+     * // Update one Demo
+     * const demo = await prisma.demo.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends DemoUpdateArgs>(args: SelectSubset<T, DemoUpdateArgs<ExtArgs>>): Prisma__DemoClient<$Result.GetResult<Prisma.$DemoPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Demos.
+     * @param {DemoDeleteManyArgs} args - Arguments to filter Demos to delete.
+     * @example
+     * // Delete a few Demos
+     * const { count } = await prisma.demo.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends DemoDeleteManyArgs>(args?: SelectSubset<T, DemoDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Demos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DemoUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Demos
+     * const demo = await prisma.demo.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends DemoUpdateManyArgs>(args: SelectSubset<T, DemoUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Demos and returns the data updated in the database.
+     * @param {DemoUpdateManyAndReturnArgs} args - Arguments to update many Demos.
+     * @example
+     * // Update many Demos
+     * const demo = await prisma.demo.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Demos and only return the `id`
+     * const demoWithIdOnly = await prisma.demo.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends DemoUpdateManyAndReturnArgs>(args: SelectSubset<T, DemoUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DemoPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Demo.
+     * @param {DemoUpsertArgs} args - Arguments to update or create a Demo.
+     * @example
+     * // Update or create a Demo
+     * const demo = await prisma.demo.upsert({
+     *   create: {
+     *     // ... data to create a Demo
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Demo we want to update
+     *   }
+     * })
+     */
+    upsert<T extends DemoUpsertArgs>(args: SelectSubset<T, DemoUpsertArgs<ExtArgs>>): Prisma__DemoClient<$Result.GetResult<Prisma.$DemoPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Demos.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DemoCountArgs} args - Arguments to filter Demos to count.
+     * @example
+     * // Count the number of Demos
+     * const count = await prisma.demo.count({
+     *   where: {
+     *     // ... the filter for the Demos we want to count
+     *   }
+     * })
+    **/
+    count<T extends DemoCountArgs>(
+      args?: Subset<T, DemoCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], DemoCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Demo.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DemoAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends DemoAggregateArgs>(args: Subset<T, DemoAggregateArgs>): Prisma.PrismaPromise<GetDemoAggregateType<T>>
+
+    /**
+     * Group by Demo.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {DemoGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends DemoGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: DemoGroupByArgs['orderBy'] }
+        : { orderBy?: DemoGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, DemoGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetDemoGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Demo model
+   */
+  readonly fields: DemoFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Demo.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__DemoClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Demo model
+   */
+  interface DemoFieldRefs {
+    readonly id: FieldRef<"Demo", 'Int'>
+    readonly url: FieldRef<"Demo", 'String'>
+    readonly title: FieldRef<"Demo", 'String'>
+    readonly description: FieldRef<"Demo", 'String'>
+    readonly status: FieldRef<"Demo", 'Status'>
+    readonly createdAt: FieldRef<"Demo", 'DateTime'>
+    readonly updatedAt: FieldRef<"Demo", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Demo findUnique
+   */
+  export type DemoFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Demo
+     */
+    select?: DemoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Demo
+     */
+    omit?: DemoOmit<ExtArgs> | null
+    /**
+     * Filter, which Demo to fetch.
+     */
+    where: DemoWhereUniqueInput
+  }
+
+  /**
+   * Demo findUniqueOrThrow
+   */
+  export type DemoFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Demo
+     */
+    select?: DemoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Demo
+     */
+    omit?: DemoOmit<ExtArgs> | null
+    /**
+     * Filter, which Demo to fetch.
+     */
+    where: DemoWhereUniqueInput
+  }
+
+  /**
+   * Demo findFirst
+   */
+  export type DemoFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Demo
+     */
+    select?: DemoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Demo
+     */
+    omit?: DemoOmit<ExtArgs> | null
+    /**
+     * Filter, which Demo to fetch.
+     */
+    where?: DemoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Demos to fetch.
+     */
+    orderBy?: DemoOrderByWithRelationInput | DemoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Demos.
+     */
+    cursor?: DemoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Demos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Demos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Demos.
+     */
+    distinct?: DemoScalarFieldEnum | DemoScalarFieldEnum[]
+  }
+
+  /**
+   * Demo findFirstOrThrow
+   */
+  export type DemoFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Demo
+     */
+    select?: DemoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Demo
+     */
+    omit?: DemoOmit<ExtArgs> | null
+    /**
+     * Filter, which Demo to fetch.
+     */
+    where?: DemoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Demos to fetch.
+     */
+    orderBy?: DemoOrderByWithRelationInput | DemoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Demos.
+     */
+    cursor?: DemoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Demos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Demos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Demos.
+     */
+    distinct?: DemoScalarFieldEnum | DemoScalarFieldEnum[]
+  }
+
+  /**
+   * Demo findMany
+   */
+  export type DemoFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Demo
+     */
+    select?: DemoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Demo
+     */
+    omit?: DemoOmit<ExtArgs> | null
+    /**
+     * Filter, which Demos to fetch.
+     */
+    where?: DemoWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Demos to fetch.
+     */
+    orderBy?: DemoOrderByWithRelationInput | DemoOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Demos.
+     */
+    cursor?: DemoWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Demos from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Demos.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Demos.
+     */
+    distinct?: DemoScalarFieldEnum | DemoScalarFieldEnum[]
+  }
+
+  /**
+   * Demo create
+   */
+  export type DemoCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Demo
+     */
+    select?: DemoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Demo
+     */
+    omit?: DemoOmit<ExtArgs> | null
+    /**
+     * The data needed to create a Demo.
+     */
+    data: XOR<DemoCreateInput, DemoUncheckedCreateInput>
+  }
+
+  /**
+   * Demo createMany
+   */
+  export type DemoCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Demos.
+     */
+    data: DemoCreateManyInput | DemoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Demo createManyAndReturn
+   */
+  export type DemoCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Demo
+     */
+    select?: DemoSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Demo
+     */
+    omit?: DemoOmit<ExtArgs> | null
+    /**
+     * The data used to create many Demos.
+     */
+    data: DemoCreateManyInput | DemoCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Demo update
+   */
+  export type DemoUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Demo
+     */
+    select?: DemoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Demo
+     */
+    omit?: DemoOmit<ExtArgs> | null
+    /**
+     * The data needed to update a Demo.
+     */
+    data: XOR<DemoUpdateInput, DemoUncheckedUpdateInput>
+    /**
+     * Choose, which Demo to update.
+     */
+    where: DemoWhereUniqueInput
+  }
+
+  /**
+   * Demo updateMany
+   */
+  export type DemoUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Demos.
+     */
+    data: XOR<DemoUpdateManyMutationInput, DemoUncheckedUpdateManyInput>
+    /**
+     * Filter which Demos to update
+     */
+    where?: DemoWhereInput
+    /**
+     * Limit how many Demos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Demo updateManyAndReturn
+   */
+  export type DemoUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Demo
+     */
+    select?: DemoSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Demo
+     */
+    omit?: DemoOmit<ExtArgs> | null
+    /**
+     * The data used to update Demos.
+     */
+    data: XOR<DemoUpdateManyMutationInput, DemoUncheckedUpdateManyInput>
+    /**
+     * Filter which Demos to update
+     */
+    where?: DemoWhereInput
+    /**
+     * Limit how many Demos to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Demo upsert
+   */
+  export type DemoUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Demo
+     */
+    select?: DemoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Demo
+     */
+    omit?: DemoOmit<ExtArgs> | null
+    /**
+     * The filter to search for the Demo to update in case it exists.
+     */
+    where: DemoWhereUniqueInput
+    /**
+     * In case the Demo found by the `where` argument doesn't exist, create a new Demo with this data.
+     */
+    create: XOR<DemoCreateInput, DemoUncheckedCreateInput>
+    /**
+     * In case the Demo was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<DemoUpdateInput, DemoUncheckedUpdateInput>
+  }
+
+  /**
+   * Demo delete
+   */
+  export type DemoDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Demo
+     */
+    select?: DemoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Demo
+     */
+    omit?: DemoOmit<ExtArgs> | null
+    /**
+     * Filter which Demo to delete.
+     */
+    where: DemoWhereUniqueInput
+  }
+
+  /**
+   * Demo deleteMany
+   */
+  export type DemoDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Demos to delete
+     */
+    where?: DemoWhereInput
+    /**
+     * Limit how many Demos to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Demo without action
+   */
+  export type DemoDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Demo
+     */
+    select?: DemoSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Demo
+     */
+    omit?: DemoOmit<ExtArgs> | null
+  }
+
+
+  /**
    * Model Entry
    */
 
@@ -909,7 +2057,6 @@ export namespace Prisma {
 
   export type EntryMinAggregateOutputType = {
     id: number | null
-    subProjectUuid: string | null
     url: string | null
     title: string | null
     description: string | null
@@ -920,7 +2067,6 @@ export namespace Prisma {
 
   export type EntryMaxAggregateOutputType = {
     id: number | null
-    subProjectUuid: string | null
     url: string | null
     title: string | null
     description: string | null
@@ -931,7 +2077,6 @@ export namespace Prisma {
 
   export type EntryCountAggregateOutputType = {
     id: number
-    subProjectUuid: number
     url: number
     title: number
     description: number
@@ -952,7 +2097,6 @@ export namespace Prisma {
 
   export type EntryMinAggregateInputType = {
     id?: true
-    subProjectUuid?: true
     url?: true
     title?: true
     description?: true
@@ -963,7 +2107,6 @@ export namespace Prisma {
 
   export type EntryMaxAggregateInputType = {
     id?: true
-    subProjectUuid?: true
     url?: true
     title?: true
     description?: true
@@ -974,7 +2117,6 @@ export namespace Prisma {
 
   export type EntryCountAggregateInputType = {
     id?: true
-    subProjectUuid?: true
     url?: true
     title?: true
     description?: true
@@ -1072,7 +2214,6 @@ export namespace Prisma {
 
   export type EntryGroupByOutputType = {
     id: number
-    subProjectUuid: string
     url: string
     title: string
     description: string | null
@@ -1102,7 +2243,6 @@ export namespace Prisma {
 
   export type EntrySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    subProjectUuid?: boolean
     url?: boolean
     title?: boolean
     description?: boolean
@@ -1113,7 +2253,6 @@ export namespace Prisma {
 
   export type EntrySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    subProjectUuid?: boolean
     url?: boolean
     title?: boolean
     description?: boolean
@@ -1124,7 +2263,6 @@ export namespace Prisma {
 
   export type EntrySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    subProjectUuid?: boolean
     url?: boolean
     title?: boolean
     description?: boolean
@@ -1135,7 +2273,6 @@ export namespace Prisma {
 
   export type EntrySelectScalar = {
     id?: boolean
-    subProjectUuid?: boolean
     url?: boolean
     title?: boolean
     description?: boolean
@@ -1144,14 +2281,13 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type EntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "subProjectUuid" | "url" | "title" | "description" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["entry"]>
+  export type EntryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "url" | "title" | "description" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["entry"]>
 
   export type $EntryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Entry"
     objects: {}
     scalars: $Extensions.GetPayloadResult<{
       id: number
-      subProjectUuid: string
       url: string
       title: string
       description: string | null
@@ -1582,7 +2718,6 @@ export namespace Prisma {
    */
   interface EntryFieldRefs {
     readonly id: FieldRef<"Entry", 'Int'>
-    readonly subProjectUuid: FieldRef<"Entry", 'String'>
     readonly url: FieldRef<"Entry", 'String'>
     readonly title: FieldRef<"Entry", 'String'>
     readonly description: FieldRef<"Entry", 'String'>
@@ -1765,6 +2900,11 @@ export namespace Prisma {
      * Skip the first `n` Entries.
      */
     skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Entries.
+     */
     distinct?: EntryScalarFieldEnum | EntryScalarFieldEnum[]
   }
 
@@ -1969,9 +3109,21 @@ export namespace Prisma {
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
+  export const DemoScalarFieldEnum: {
+    id: 'id',
+    url: 'url',
+    title: 'title',
+    description: 'description',
+    status: 'status',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type DemoScalarFieldEnum = (typeof DemoScalarFieldEnum)[keyof typeof DemoScalarFieldEnum]
+
+
   export const EntryScalarFieldEnum: {
     id: 'id',
-    subProjectUuid: 'subProjectUuid',
     url: 'url',
     title: 'title',
     description: 'description',
@@ -2085,12 +3237,75 @@ export namespace Prisma {
    */
 
 
+  export type DemoWhereInput = {
+    AND?: DemoWhereInput | DemoWhereInput[]
+    OR?: DemoWhereInput[]
+    NOT?: DemoWhereInput | DemoWhereInput[]
+    id?: IntFilter<"Demo"> | number
+    url?: StringFilter<"Demo"> | string
+    title?: StringFilter<"Demo"> | string
+    description?: StringNullableFilter<"Demo"> | string | null
+    status?: EnumStatusFilter<"Demo"> | $Enums.Status
+    createdAt?: DateTimeFilter<"Demo"> | Date | string
+    updatedAt?: DateTimeFilter<"Demo"> | Date | string
+  }
+
+  export type DemoOrderByWithRelationInput = {
+    id?: SortOrder
+    url?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type DemoWhereUniqueInput = Prisma.AtLeast<{
+    id?: number
+    url?: string
+    AND?: DemoWhereInput | DemoWhereInput[]
+    OR?: DemoWhereInput[]
+    NOT?: DemoWhereInput | DemoWhereInput[]
+    title?: StringFilter<"Demo"> | string
+    description?: StringNullableFilter<"Demo"> | string | null
+    status?: EnumStatusFilter<"Demo"> | $Enums.Status
+    createdAt?: DateTimeFilter<"Demo"> | Date | string
+    updatedAt?: DateTimeFilter<"Demo"> | Date | string
+  }, "id" | "url">
+
+  export type DemoOrderByWithAggregationInput = {
+    id?: SortOrder
+    url?: SortOrder
+    title?: SortOrder
+    description?: SortOrderInput | SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: DemoCountOrderByAggregateInput
+    _avg?: DemoAvgOrderByAggregateInput
+    _max?: DemoMaxOrderByAggregateInput
+    _min?: DemoMinOrderByAggregateInput
+    _sum?: DemoSumOrderByAggregateInput
+  }
+
+  export type DemoScalarWhereWithAggregatesInput = {
+    AND?: DemoScalarWhereWithAggregatesInput | DemoScalarWhereWithAggregatesInput[]
+    OR?: DemoScalarWhereWithAggregatesInput[]
+    NOT?: DemoScalarWhereWithAggregatesInput | DemoScalarWhereWithAggregatesInput[]
+    id?: IntWithAggregatesFilter<"Demo"> | number
+    url?: StringWithAggregatesFilter<"Demo"> | string
+    title?: StringWithAggregatesFilter<"Demo"> | string
+    description?: StringNullableWithAggregatesFilter<"Demo"> | string | null
+    status?: EnumStatusWithAggregatesFilter<"Demo"> | $Enums.Status
+    createdAt?: DateTimeWithAggregatesFilter<"Demo"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Demo"> | Date | string
+  }
+
   export type EntryWhereInput = {
     AND?: EntryWhereInput | EntryWhereInput[]
     OR?: EntryWhereInput[]
     NOT?: EntryWhereInput | EntryWhereInput[]
     id?: IntFilter<"Entry"> | number
-    subProjectUuid?: UuidFilter<"Entry"> | string
     url?: StringFilter<"Entry"> | string
     title?: StringFilter<"Entry"> | string
     description?: StringNullableFilter<"Entry"> | string | null
@@ -2101,7 +3316,6 @@ export namespace Prisma {
 
   export type EntryOrderByWithRelationInput = {
     id?: SortOrder
-    subProjectUuid?: SortOrder
     url?: SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
@@ -2112,22 +3326,19 @@ export namespace Prisma {
 
   export type EntryWhereUniqueInput = Prisma.AtLeast<{
     id?: number
-    subProjectUuid_url?: EntrySubProjectUuidUrlCompoundUniqueInput
+    url?: string
     AND?: EntryWhereInput | EntryWhereInput[]
     OR?: EntryWhereInput[]
     NOT?: EntryWhereInput | EntryWhereInput[]
-    subProjectUuid?: UuidFilter<"Entry"> | string
-    url?: StringFilter<"Entry"> | string
     title?: StringFilter<"Entry"> | string
     description?: StringNullableFilter<"Entry"> | string | null
     status?: EnumStatusFilter<"Entry"> | $Enums.Status
     createdAt?: DateTimeFilter<"Entry"> | Date | string
     updatedAt?: DateTimeFilter<"Entry"> | Date | string
-  }, "id" | "subProjectUuid_url">
+  }, "id" | "url">
 
   export type EntryOrderByWithAggregationInput = {
     id?: SortOrder
-    subProjectUuid?: SortOrder
     url?: SortOrder
     title?: SortOrder
     description?: SortOrderInput | SortOrder
@@ -2146,7 +3357,6 @@ export namespace Prisma {
     OR?: EntryScalarWhereWithAggregatesInput[]
     NOT?: EntryScalarWhereWithAggregatesInput | EntryScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"Entry"> | number
-    subProjectUuid?: UuidWithAggregatesFilter<"Entry"> | string
     url?: StringWithAggregatesFilter<"Entry"> | string
     title?: StringWithAggregatesFilter<"Entry"> | string
     description?: StringNullableWithAggregatesFilter<"Entry"> | string | null
@@ -2155,8 +3365,74 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"Entry"> | Date | string
   }
 
+  export type DemoCreateInput = {
+    url: string
+    title: string
+    description?: string | null
+    status?: $Enums.Status
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DemoUncheckedCreateInput = {
+    id?: number
+    url: string
+    title: string
+    description?: string | null
+    status?: $Enums.Status
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DemoUpdateInput = {
+    url?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DemoUncheckedUpdateInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    url?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DemoCreateManyInput = {
+    id?: number
+    url: string
+    title: string
+    description?: string | null
+    status?: $Enums.Status
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DemoUpdateManyMutationInput = {
+    url?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DemoUncheckedUpdateManyInput = {
+    id?: IntFieldUpdateOperationsInput | number
+    url?: StringFieldUpdateOperationsInput | string
+    title?: StringFieldUpdateOperationsInput | string
+    description?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type EntryCreateInput = {
-    subProjectUuid?: string
     url: string
     title: string
     description?: string | null
@@ -2167,7 +3443,6 @@ export namespace Prisma {
 
   export type EntryUncheckedCreateInput = {
     id?: number
-    subProjectUuid?: string
     url: string
     title: string
     description?: string | null
@@ -2177,7 +3452,6 @@ export namespace Prisma {
   }
 
   export type EntryUpdateInput = {
-    subProjectUuid?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -2188,7 +3462,6 @@ export namespace Prisma {
 
   export type EntryUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
-    subProjectUuid?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -2199,7 +3472,6 @@ export namespace Prisma {
 
   export type EntryCreateManyInput = {
     id?: number
-    subProjectUuid?: string
     url: string
     title: string
     description?: string | null
@@ -2209,7 +3481,6 @@ export namespace Prisma {
   }
 
   export type EntryUpdateManyMutationInput = {
-    subProjectUuid?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -2220,7 +3491,6 @@ export namespace Prisma {
 
   export type EntryUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
-    subProjectUuid?: StringFieldUpdateOperationsInput | string
     url?: StringFieldUpdateOperationsInput | string
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
@@ -2238,18 +3508,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
-  }
-
-  export type UuidFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedUuidFilter<$PrismaModel> | string
   }
 
   export type StringFilter<$PrismaModel = never> = {
@@ -2305,14 +3563,8 @@ export namespace Prisma {
     nulls?: NullsOrder
   }
 
-  export type EntrySubProjectUuidUrlCompoundUniqueInput = {
-    subProjectUuid: string
-    url: string
-  }
-
-  export type EntryCountOrderByAggregateInput = {
+  export type DemoCountOrderByAggregateInput = {
     id?: SortOrder
-    subProjectUuid?: SortOrder
     url?: SortOrder
     title?: SortOrder
     description?: SortOrder
@@ -2321,13 +3573,12 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type EntryAvgOrderByAggregateInput = {
+  export type DemoAvgOrderByAggregateInput = {
     id?: SortOrder
   }
 
-  export type EntryMaxOrderByAggregateInput = {
+  export type DemoMaxOrderByAggregateInput = {
     id?: SortOrder
-    subProjectUuid?: SortOrder
     url?: SortOrder
     title?: SortOrder
     description?: SortOrder
@@ -2336,9 +3587,8 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type EntryMinOrderByAggregateInput = {
+  export type DemoMinOrderByAggregateInput = {
     id?: SortOrder
-    subProjectUuid?: SortOrder
     url?: SortOrder
     title?: SortOrder
     description?: SortOrder
@@ -2347,7 +3597,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
-  export type EntrySumOrderByAggregateInput = {
+  export type DemoSumOrderByAggregateInput = {
     id?: SortOrder
   }
 
@@ -2365,21 +3615,6 @@ export namespace Prisma {
     _sum?: NestedIntFilter<$PrismaModel>
     _min?: NestedIntFilter<$PrismaModel>
     _max?: NestedIntFilter<$PrismaModel>
-  }
-
-  export type UuidWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedUuidWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
   }
 
   export type StringWithAggregatesFilter<$PrismaModel = never> = {
@@ -2442,6 +3677,44 @@ export namespace Prisma {
     _max?: NestedDateTimeFilter<$PrismaModel>
   }
 
+  export type EntryCountOrderByAggregateInput = {
+    id?: SortOrder
+    url?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EntryAvgOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
+  export type EntryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    url?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EntryMinOrderByAggregateInput = {
+    id?: SortOrder
+    url?: SortOrder
+    title?: SortOrder
+    description?: SortOrder
+    status?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type EntrySumOrderByAggregateInput = {
+    id?: SortOrder
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -2475,17 +3748,6 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntFilter<$PrismaModel> | number
-  }
-
-  export type NestedUuidFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedUuidFilter<$PrismaModel> | string
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -2559,20 +3821,6 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatFilter<$PrismaModel> | number
-  }
-
-  export type NestedUuidWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel>
-    in?: string[] | ListStringFieldRefInput<$PrismaModel>
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel>
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedUuidWithAggregatesFilter<$PrismaModel> | string
-    _count?: NestedIntFilter<$PrismaModel>
-    _min?: NestedStringFilter<$PrismaModel>
-    _max?: NestedStringFilter<$PrismaModel>
   }
 
   export type NestedStringWithAggregatesFilter<$PrismaModel = never> = {

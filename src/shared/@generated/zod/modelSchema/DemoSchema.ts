@@ -2,10 +2,10 @@ import { z } from 'zod';
 import { StatusSchema } from '../inputTypeSchemas/StatusSchema'
 
 /////////////////////////////////////////
-// ENTRY SCHEMA
+// DEMO SCHEMA
 /////////////////////////////////////////
 
-export const EntrySchema = z.object({
+export const DemoSchema = z.object({
   status: StatusSchema,
   id: z.number().int(),
   url: z.string(),
@@ -15,6 +15,6 @@ export const EntrySchema = z.object({
   updatedAt: z.date(),
 })
 
-export type Entry = z.infer<typeof EntrySchema>
+export type Demo = z.infer<typeof DemoSchema>
 
-export default EntrySchema;
+export default DemoSchema;

@@ -1,14 +1,14 @@
 ## Getting Started
 
 ### pre requirement
-`pnpm i -g cross-env` // plopfile不支持ts
+`pnpm i -g cross-env` // plopfile不支持引用ts文件
 `pnpm i -g dotenv` // prisma拿不到env, eg.error: Environment variable not found: DATABASE_URL
 
 1. Create model in `prisma/schema`
 2. `pnpm format-prisma`
 3. Apply database migrations: `npx prisma migrate dev --name {name}` 
 4. Generate zod: `pnpm prisma generate`
-5. 引用generated zod, 创建form zod(文件夹`shared/zod`)
+5. 引用generated zod, 手动创建form zod(文件夹`shared/zod`)；或使用pnpm gene, 选择schema模型半自动创建zod
 
 如仅本地开发，数据库不同步到supabase；则第3条变更为：
 - 1. 运行`dotenv -e .env -- npx prisma migrate dev --create-only`

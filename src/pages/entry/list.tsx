@@ -1,10 +1,10 @@
+import { List, useTable } from '@refinedev/antd'
+import type { HttpError } from '@refinedev/core'
+import { Button, Form, Input, Select, Space } from 'antd'
 import type { FieldConfig } from '@/@types/global'
 import TableSimple from '@/components/TableSimple'
 import type { Entry } from '@/shared/@generated/zod/modelSchema/EntrySchema'
 import { StatusList } from '@/shared/const'
-import { List, useTable } from '@refinedev/antd'
-import type { HttpError } from '@refinedev/core'
-import { Button, Form, Input, Select, Space } from 'antd'
 
 interface ISearch {
   subProjectUuid: string
@@ -41,14 +41,14 @@ export const EntryList: React.FC<{ fields: FieldConfig[] }> = ({ fields }) => {
     <List>
       <Form {...searchFormProps}>
         <Space>
-          <Form.Item name="subProjectUuid">
-            <Input placeholder="Search by SubProjectUuid" />
+          <Form.Item name='subProjectUuid'>
+            <Input placeholder='Search by SubProjectUuid' />
           </Form.Item>
-          <Form.Item name="title">
-            <Input placeholder="Search by Title" />
+          <Form.Item name='title'>
+            <Input placeholder='Search by Title' />
           </Form.Item>
-          <Form.Item name="status">
-            <Select options={StatusList} className="w-300" placeholder="Status" allowClear />
+          <Form.Item name='status'>
+            <Select options={StatusList} className='w-300' placeholder='Status' allowClear />
           </Form.Item>
           <Form.Item>
             <Button onClick={searchFormProps.form?.submit}>Search</Button>

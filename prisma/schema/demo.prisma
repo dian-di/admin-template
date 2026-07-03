@@ -1,4 +1,4 @@
-model Entry {
+model Demo {
   id          Int      @id @default(autoincrement())
   url         String
   title       String
@@ -8,5 +8,5 @@ model Entry {
   updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
 
   @@unique([url])
-  @@map("entry")
+  @@map("demo")
 }

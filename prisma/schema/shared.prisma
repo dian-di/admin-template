@@ -1,0 +1,7 @@
+enum Status {
+  Uninitialized
+  InProgress
+  Completed
+
+  @@map("status")
+}
