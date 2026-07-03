@@ -36,11 +36,36 @@ export namespace $Enums {
 
 export type Status = (typeof Status)[keyof typeof Status]
 
+
+export const Completed: {
+  Completed: 'Completed',
+  Uncompleted: 'Uncompleted'
+};
+
+export type Completed = (typeof Completed)[keyof typeof Completed]
+
+
+export const Type: {
+  Text: 'Text',
+  Image: 'Image',
+  Video: 'Video'
+};
+
+export type Type = (typeof Type)[keyof typeof Type]
+
 }
 
 export type Status = $Enums.Status
 
 export const Status: typeof $Enums.Status
+
+export type Completed = $Enums.Completed
+
+export const Completed: typeof $Enums.Completed
+
+export type Type = $Enums.Type
+
+export const Type: typeof $Enums.Type
 
 /**
  * ##  Prisma Client ʲˢ
@@ -1001,6 +1026,8 @@ export namespace Prisma {
     title: string | null
     description: string | null
     status: $Enums.Status | null
+    completed: $Enums.Completed | null
+    type: $Enums.Type | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1011,6 +1038,8 @@ export namespace Prisma {
     title: string | null
     description: string | null
     status: $Enums.Status | null
+    completed: $Enums.Completed | null
+    type: $Enums.Type | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1021,6 +1050,8 @@ export namespace Prisma {
     title: number
     description: number
     status: number
+    completed: number
+    type: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -1041,6 +1072,8 @@ export namespace Prisma {
     title?: true
     description?: true
     status?: true
+    completed?: true
+    type?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1051,6 +1084,8 @@ export namespace Prisma {
     title?: true
     description?: true
     status?: true
+    completed?: true
+    type?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -1061,6 +1096,8 @@ export namespace Prisma {
     title?: true
     description?: true
     status?: true
+    completed?: true
+    type?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -1158,6 +1195,8 @@ export namespace Prisma {
     title: string
     description: string | null
     status: $Enums.Status
+    completed: $Enums.Completed
+    type: $Enums.Type
     createdAt: Date
     updatedAt: Date
     _count: DemoCountAggregateOutputType | null
@@ -1187,6 +1226,8 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     status?: boolean
+    completed?: boolean
+    type?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["demo"]>
@@ -1197,6 +1238,8 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     status?: boolean
+    completed?: boolean
+    type?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["demo"]>
@@ -1207,6 +1250,8 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     status?: boolean
+    completed?: boolean
+    type?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["demo"]>
@@ -1217,11 +1262,13 @@ export namespace Prisma {
     title?: boolean
     description?: boolean
     status?: boolean
+    completed?: boolean
+    type?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type DemoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "url" | "title" | "description" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["demo"]>
+  export type DemoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "url" | "title" | "description" | "status" | "completed" | "type" | "createdAt" | "updatedAt", ExtArgs["result"]["demo"]>
 
   export type $DemoPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Demo"
@@ -1232,6 +1279,8 @@ export namespace Prisma {
       title: string
       description: string | null
       status: $Enums.Status
+      completed: $Enums.Completed
+      type: $Enums.Type
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["demo"]>
@@ -1662,6 +1711,8 @@ export namespace Prisma {
     readonly title: FieldRef<"Demo", 'String'>
     readonly description: FieldRef<"Demo", 'String'>
     readonly status: FieldRef<"Demo", 'Status'>
+    readonly completed: FieldRef<"Demo", 'Completed'>
+    readonly type: FieldRef<"Demo", 'Type'>
     readonly createdAt: FieldRef<"Demo", 'DateTime'>
     readonly updatedAt: FieldRef<"Demo", 'DateTime'>
   }
@@ -3115,6 +3166,8 @@ export namespace Prisma {
     title: 'title',
     description: 'description',
     status: 'status',
+    completed: 'completed',
+    type: 'type',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -3207,6 +3260,34 @@ export namespace Prisma {
 
 
   /**
+   * Reference to a field of type 'Completed'
+   */
+  export type EnumCompletedFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Completed'>
+    
+
+
+  /**
+   * Reference to a field of type 'Completed[]'
+   */
+  export type ListEnumCompletedFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Completed[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Type'
+   */
+  export type EnumTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Type'>
+    
+
+
+  /**
+   * Reference to a field of type 'Type[]'
+   */
+  export type ListEnumTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Type[]'>
+    
+
+
+  /**
    * Reference to a field of type 'DateTime'
    */
   export type DateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DateTime'>
@@ -3246,6 +3327,8 @@ export namespace Prisma {
     title?: StringFilter<"Demo"> | string
     description?: StringNullableFilter<"Demo"> | string | null
     status?: EnumStatusFilter<"Demo"> | $Enums.Status
+    completed?: EnumCompletedFilter<"Demo"> | $Enums.Completed
+    type?: EnumTypeFilter<"Demo"> | $Enums.Type
     createdAt?: DateTimeFilter<"Demo"> | Date | string
     updatedAt?: DateTimeFilter<"Demo"> | Date | string
   }
@@ -3256,6 +3339,8 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     status?: SortOrder
+    completed?: SortOrder
+    type?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -3269,6 +3354,8 @@ export namespace Prisma {
     title?: StringFilter<"Demo"> | string
     description?: StringNullableFilter<"Demo"> | string | null
     status?: EnumStatusFilter<"Demo"> | $Enums.Status
+    completed?: EnumCompletedFilter<"Demo"> | $Enums.Completed
+    type?: EnumTypeFilter<"Demo"> | $Enums.Type
     createdAt?: DateTimeFilter<"Demo"> | Date | string
     updatedAt?: DateTimeFilter<"Demo"> | Date | string
   }, "id" | "url">
@@ -3279,6 +3366,8 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrderInput | SortOrder
     status?: SortOrder
+    completed?: SortOrder
+    type?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: DemoCountOrderByAggregateInput
@@ -3297,6 +3386,8 @@ export namespace Prisma {
     title?: StringWithAggregatesFilter<"Demo"> | string
     description?: StringNullableWithAggregatesFilter<"Demo"> | string | null
     status?: EnumStatusWithAggregatesFilter<"Demo"> | $Enums.Status
+    completed?: EnumCompletedWithAggregatesFilter<"Demo"> | $Enums.Completed
+    type?: EnumTypeWithAggregatesFilter<"Demo"> | $Enums.Type
     createdAt?: DateTimeWithAggregatesFilter<"Demo"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Demo"> | Date | string
   }
@@ -3370,6 +3461,8 @@ export namespace Prisma {
     title: string
     description?: string | null
     status?: $Enums.Status
+    completed?: $Enums.Completed
+    type?: $Enums.Type
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3380,6 +3473,8 @@ export namespace Prisma {
     title: string
     description?: string | null
     status?: $Enums.Status
+    completed?: $Enums.Completed
+    type?: $Enums.Type
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3389,6 +3484,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    completed?: EnumCompletedFieldUpdateOperationsInput | $Enums.Completed
+    type?: EnumTypeFieldUpdateOperationsInput | $Enums.Type
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3399,6 +3496,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    completed?: EnumCompletedFieldUpdateOperationsInput | $Enums.Completed
+    type?: EnumTypeFieldUpdateOperationsInput | $Enums.Type
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3409,6 +3508,8 @@ export namespace Prisma {
     title: string
     description?: string | null
     status?: $Enums.Status
+    completed?: $Enums.Completed
+    type?: $Enums.Type
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -3418,6 +3519,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    completed?: EnumCompletedFieldUpdateOperationsInput | $Enums.Completed
+    type?: EnumTypeFieldUpdateOperationsInput | $Enums.Type
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3428,6 +3531,8 @@ export namespace Prisma {
     title?: StringFieldUpdateOperationsInput | string
     description?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumStatusFieldUpdateOperationsInput | $Enums.Status
+    completed?: EnumCompletedFieldUpdateOperationsInput | $Enums.Completed
+    type?: EnumTypeFieldUpdateOperationsInput | $Enums.Type
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -3547,6 +3652,20 @@ export namespace Prisma {
     not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
   }
 
+  export type EnumCompletedFilter<$PrismaModel = never> = {
+    equals?: $Enums.Completed | EnumCompletedFieldRefInput<$PrismaModel>
+    in?: $Enums.Completed[] | ListEnumCompletedFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Completed[] | ListEnumCompletedFieldRefInput<$PrismaModel>
+    not?: NestedEnumCompletedFilter<$PrismaModel> | $Enums.Completed
+  }
+
+  export type EnumTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.Type | EnumTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.Type[] | ListEnumTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Type[] | ListEnumTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTypeFilter<$PrismaModel> | $Enums.Type
+  }
+
   export type DateTimeFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -3569,6 +3688,8 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     status?: SortOrder
+    completed?: SortOrder
+    type?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -3583,6 +3704,8 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     status?: SortOrder
+    completed?: SortOrder
+    type?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -3593,6 +3716,8 @@ export namespace Prisma {
     title?: SortOrder
     description?: SortOrder
     status?: SortOrder
+    completed?: SortOrder
+    type?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -3663,6 +3788,26 @@ export namespace Prisma {
     _max?: NestedEnumStatusFilter<$PrismaModel>
   }
 
+  export type EnumCompletedWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Completed | EnumCompletedFieldRefInput<$PrismaModel>
+    in?: $Enums.Completed[] | ListEnumCompletedFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Completed[] | ListEnumCompletedFieldRefInput<$PrismaModel>
+    not?: NestedEnumCompletedWithAggregatesFilter<$PrismaModel> | $Enums.Completed
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCompletedFilter<$PrismaModel>
+    _max?: NestedEnumCompletedFilter<$PrismaModel>
+  }
+
+  export type EnumTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Type | EnumTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.Type[] | ListEnumTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Type[] | ListEnumTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTypeWithAggregatesFilter<$PrismaModel> | $Enums.Type
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTypeFilter<$PrismaModel>
+    _max?: NestedEnumTypeFilter<$PrismaModel>
+  }
+
   export type DateTimeWithAggregatesFilter<$PrismaModel = never> = {
     equals?: Date | string | DateTimeFieldRefInput<$PrismaModel>
     in?: Date[] | string[] | ListDateTimeFieldRefInput<$PrismaModel>
@@ -3727,6 +3872,14 @@ export namespace Prisma {
     set?: $Enums.Status
   }
 
+  export type EnumCompletedFieldUpdateOperationsInput = {
+    set?: $Enums.Completed
+  }
+
+  export type EnumTypeFieldUpdateOperationsInput = {
+    set?: $Enums.Type
+  }
+
   export type DateTimeFieldUpdateOperationsInput = {
     set?: Date | string
   }
@@ -3783,6 +3936,20 @@ export namespace Prisma {
     in?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     notIn?: $Enums.Status[] | ListEnumStatusFieldRefInput<$PrismaModel>
     not?: NestedEnumStatusFilter<$PrismaModel> | $Enums.Status
+  }
+
+  export type NestedEnumCompletedFilter<$PrismaModel = never> = {
+    equals?: $Enums.Completed | EnumCompletedFieldRefInput<$PrismaModel>
+    in?: $Enums.Completed[] | ListEnumCompletedFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Completed[] | ListEnumCompletedFieldRefInput<$PrismaModel>
+    not?: NestedEnumCompletedFilter<$PrismaModel> | $Enums.Completed
+  }
+
+  export type NestedEnumTypeFilter<$PrismaModel = never> = {
+    equals?: $Enums.Type | EnumTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.Type[] | ListEnumTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Type[] | ListEnumTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTypeFilter<$PrismaModel> | $Enums.Type
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -3876,6 +4043,26 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedEnumStatusFilter<$PrismaModel>
     _max?: NestedEnumStatusFilter<$PrismaModel>
+  }
+
+  export type NestedEnumCompletedWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Completed | EnumCompletedFieldRefInput<$PrismaModel>
+    in?: $Enums.Completed[] | ListEnumCompletedFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Completed[] | ListEnumCompletedFieldRefInput<$PrismaModel>
+    not?: NestedEnumCompletedWithAggregatesFilter<$PrismaModel> | $Enums.Completed
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumCompletedFilter<$PrismaModel>
+    _max?: NestedEnumCompletedFilter<$PrismaModel>
+  }
+
+  export type NestedEnumTypeWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: $Enums.Type | EnumTypeFieldRefInput<$PrismaModel>
+    in?: $Enums.Type[] | ListEnumTypeFieldRefInput<$PrismaModel>
+    notIn?: $Enums.Type[] | ListEnumTypeFieldRefInput<$PrismaModel>
+    not?: NestedEnumTypeWithAggregatesFilter<$PrismaModel> | $Enums.Type
+    _count?: NestedIntFilter<$PrismaModel>
+    _min?: NestedEnumTypeFilter<$PrismaModel>
+    _max?: NestedEnumTypeFilter<$PrismaModel>
   }
 
   export type NestedDateTimeWithAggregatesFilter<$PrismaModel = never> = {

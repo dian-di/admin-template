@@ -126,6 +126,8 @@ exports.Prisma.DemoScalarFieldEnum = {
   title: 'title',
   description: 'description',
   status: 'status',
+  completed: 'completed',
+  type: 'type',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -158,6 +160,17 @@ exports.Status = exports.$Enums.Status = {
   Uninitialized: 'Uninitialized',
   InProgress: 'InProgress',
   Completed: 'Completed'
+};
+
+exports.Completed = exports.$Enums.Completed = {
+  Completed: 'Completed',
+  Uncompleted: 'Uncompleted'
+};
+
+exports.Type = exports.$Enums.Type = {
+  Text: 'Text',
+  Image: 'Image',
+  Video: 'Video'
 };
 
 exports.Prisma.ModelName = {

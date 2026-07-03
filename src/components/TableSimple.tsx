@@ -25,28 +25,29 @@ function isDateField(field: string) {
   return dateFieldList.includes(field)
 }
 
-const TableSimple: React.FC<TableSimpleProps> = ({ fields, showActions = true, ...tableProps }) => {
-  // const { tableProps } = useTable({
-  //   syncWithLocation: true,
-  // })
-
-  // 动态生成列配置
+const TableSimple: React.FC<TableSimpleProps> = ({ fields, enumMap, showActions = true, ...tableProps }) => {
   const columns: ColumnType<BaseRecord>[] = fields
-    .filter((field) => !field.hide) // 过滤掉需要隐藏的字段
+    .filter((field) => !field.hide)
     .map((field) => {
-      // 如果字段是日期类型，则使用 dataFormat 函数进行格式化\
       let render = field.render ? field.render : (text: any) => text || '--'
+
+      // enum map lookup takes priority over default render
+      if (!field.render && enumMap && typeof field.key === 'string' && enumMap[field.key]) {
+        const map = enumMap[field.key]
+        render = (text: any) => map[text] || text || '--'
+      }
+
       if (typeof field.key === 'string' && isDateField(field.key)) {
         render = (text: any) => dataFormat(text)
       }
+
       return {
         dataIndex: field.key,
-        title: field.title || geneTitle(field.key), // 默认标题生成规则
+        title: field.title || geneTitle(field.key),
         render,
       }
     })
 
-  // 添加 Actions 列
   if (showActions) {
     columns.push({
       title: 'Actions',

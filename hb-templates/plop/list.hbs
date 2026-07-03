@@ -1,6 +1,9 @@
 import type { FieldConfig } from '@/@types/global'
 import TableSimple from '@/components/TableSimple'
 import { List, useTable } from '@refinedev/antd'
+{{#if enumFields.length}}
+import { {{#each enumFields}}{{mapName}}{{#unless @last}}, {{/unless}}{{/each}} } from '@/shared/const'
+{{/if}}
 {{#if keys.searchKeys.length}}
 import type { {{pascalCase modelName}} } from '@/shared/@generated/zod/modelSchema/{{pascalCase modelName}}Schema'
 import type { HttpError } from '@refinedev/core'
@@ -11,6 +14,14 @@ import { Button, Form, Input, Space } from 'antd'
 interface ISearch {
   {{#each keys.searchKeys}}
   {{this}}?: string
+  {{/each}}
+}
+{{/if}}
+
+{{#if enumFields.length}}
+const enumMap = {
+  {{#each enumFields}}
+  {{name}}: {{mapName}},
   {{/each}}
 }
 {{/if}}
@@ -51,7 +62,7 @@ export const {{pascalCase modelName}}List: React.FC<{ fields: FieldConfig[] }> =
         </Space>
       </Form>
       {{/if}}
-      <TableSimple {...tableProps} fields={fields} />
+      <TableSimple {...tableProps} fields={fields}{{#if enumFields.length}} enumMap={enumMap}{{/if}} />
     </List>
   )
 }

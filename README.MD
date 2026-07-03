@@ -7,7 +7,7 @@
 1. Create model in `prisma/schema`
 2. `pnpm format-prisma`
 3. Apply database migrations: `npx prisma migrate dev --name {name}` 
-4. Generate zod: `pnpm prisma generate`
+4. Generate zod: `pnpm generate`
 5. 引用generated zod, 手动创建form zod(文件夹`shared/zod`)；或使用pnpm gene, 选择schema模型半自动创建zod
 
 如仅本地开发，数据库不同步到supabase；则第3条变更为：

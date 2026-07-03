@@ -99,6 +99,12 @@ importers:
       dotenv:
         specifier: ^17.4.2
         version: 17.4.2
+      fs-extra:
+        specifier: ^11.3.6
+        version: 11.3.6
+      handlebars:
+        specifier: ^4.7.9
+        version: 4.7.9
       plop:
         specifier: ^4.0.5
         version: 4.0.5(@types/node@26.1.0)
@@ -2429,6 +2435,10 @@ packages:
 
   fs-extra@11.1.1:
     resolution: {integrity: sha512-MGIE4HOvQCeUCzmlHs0vXpih4ysz4wg9qiSAu6cd42lVwPbTM1TjV7RusoyQqMmk/95gdQZX72u+YW+c3eEpFQ==}
+    engines: {node: '>=14.14'}
+
+  fs-extra@11.3.6:
+    resolution: {integrity: sha512-w8ZNZr2mKIc7qeNaQ9AVPT1+iFaI+Avd4xudVOvdDJ8VytREi1Ft5Ih7hd9jjehod8vAM5GMsfQ/TpPf4EyoEA==}
     engines: {node: '>=14.14'}
 
   fs-jetpack@5.1.0:
@@ -7030,6 +7040,12 @@ snapshots:
       universalify: 2.0.1
 
   fs-extra@11.1.1:
+    dependencies:
+      graceful-fs: 4.2.11
+      jsonfile: 6.2.1
+      universalify: 2.0.1
+
+  fs-extra@11.3.6:
     dependencies:
       graceful-fs: 4.2.11
       jsonfile: 6.2.1

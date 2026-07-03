@@ -1,15 +1,9 @@
 import { ErrorComponent } from '@refinedev/antd'
-import { Outlet } from 'react-router'
-import { EntryEdit, EntryList } from './pages/entry'
-
-import { StatusMap } from '@/shared/const'
-import { EntrySchema } from '@/shared/zod/EntrySchema'
-
-const enumKeyMap = {
-  status: StatusMap,
-} as const
-
+import { Navigate, Outlet } from 'react-router'
 import type { ZodObject } from 'zod'
+import { DemoEdit, DemoList } from './pages/demo'
+import resources, { defaultRoute } from './resources'
+import { DemoSchema } from './shared/zod/DemoSchema'
 
 const omitList = ['id']
 
@@ -18,28 +12,23 @@ function getKeysFromSchema(schema: ZodObject<any>, omitFields: string[] = omitLi
 }
 
 function geneTableFields(schema: ZodObject<any>) {
-  return getKeysFromSchema(schema).map((key) => {
-    const res =
-      key in enumKeyMap
-        ? {
-            key,
-            render: (text: any) => {
-              return enumKeyMap[key][text]
-            },
-          }
-        : { key }
-    return res
-  })
+  return getKeysFromSchema(schema).map((key) => ({ key }))
 }
+
+const homePath = defaultRoute ?? resources[0]?.list ?? '/'
 
 const routeList = [
   {
-    path: 'entry',
+    path: '/',
+    element: <Navigate to={homePath} replace />,
+  },
+  {
+    path: 'demo',
     children: [
-      { index: true, element: <EntryList fields={geneTableFields(EntrySchema)} /> },
-      { path: 'create', element: <EntryEdit /> },
-      { path: 'edit/:id', element: <EntryEdit /> },
-      { path: 'show/:id', element: <EntryEdit /> },
+      { index: true, element: <DemoList fields={geneTableFields(DemoSchema)} /> },
+      { path: 'create', element: <DemoEdit /> },
+      { path: 'edit/:id', element: <DemoEdit /> },
+      { path: 'show/:id', element: <DemoEdit /> },
     ],
   },
   {
@@ -54,13 +43,13 @@ const routes = routeList.map((route) => {
     routeRes.children = route.children.map((routeChild) => ({
       ...routeChild,
       element: isEditType(routeChild.path) ? (
-        <div className="w-2/3 w-min-96">{routeChild.element}</div>
+        <div className='w-2/3 w-min-96'>{routeChild.element}</div>
       ) : (
         routeChild.element
       ),
     }))
   }
-  if (route.path !== '*') {
+  if (route.path !== '*' && route.children) {
     routeRes.element = <Outlet />
   }
   return routeRes

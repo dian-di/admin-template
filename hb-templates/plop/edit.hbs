@@ -1,7 +1,10 @@
 import ZodForm from '@/components/zodForm'
 import { {{pascalCase modelName}}CreateSchema } from '@/shared/zod/{{pascalCase modelName}}Schema'
 import { Edit, useForm } from '@refinedev/antd'
-import { Form, Input } from 'antd'
+import { Form, Input{{#if enumFields.length}}, Select{{/if}} } from 'antd'
+{{#if enumFields.length}}
+import { {{#each enumFields}}{{listName}}{{#unless @last}}, {{/unless}}{{/each}} } from '@/shared/const'
+{{/if}}
 
 export const {{pascalCase modelName}}Edit = () => {
   const { formProps, saveButtonProps } = useForm({})
@@ -10,8 +13,12 @@ export const {{pascalCase modelName}}Edit = () => {
     <Edit saveButtonProps={saveButtonProps}>
       <ZodForm zodSchema={ {{pascalCase modelName}}CreateSchema } {...formProps} layout="vertical">
         {{#each fields}}
-        <Form.Item label="{{name}}" name="{{name}}">
-          <Input placeholder="请输入{{name}}" />
+        <Form.Item label="{{pascalCase name}}" name="{{name}}">
+          {{#if (eq type 'enum')}}
+            <Select options={{{listExpr}}} className='w-300' placeholder='{{pascalCase name}}' allowClear />
+          {{else}}
+            <Input placeholder="请输入{{name}}" />
+          {{/if}}
         </Form.Item>
         {{/each}}
       </ZodForm>

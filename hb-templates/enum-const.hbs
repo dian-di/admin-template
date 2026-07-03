@@ -1,0 +1,15 @@
+import { enumMapToList } from "./util"
+
+export enum {{name}} {
+{{#each entries}}
+  {{value}} = '{{value}}',
+{{/each}}
+}
+
+export const {{name}}Map: Record<{{name}}, string> = {
+{{#each entries}}
+  {{value}}: '{{label}}',
+{{/each}}
+}
+
+export const {{name}}List = enumMapToList({{name}}, {{name}}Map)

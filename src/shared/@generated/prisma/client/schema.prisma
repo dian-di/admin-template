@@ -1,11 +1,13 @@
 model Demo {
-  id          Int      @id @default(autoincrement())
+  id          Int       @id @default(autoincrement())
   url         String
   title       String
   description String?
-  status      Status   @default(Uninitialized)
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
+  status      Status    @default(Uninitialized)
+  completed   Completed @default(Uncompleted)
+  type        Type      @default(Text)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
 
   @@unique([url])
   @@map("demo")
@@ -22,14 +24,6 @@ model Entry {
 
   @@unique([url])
   @@map("entry")
-}
-
-enum Status {
-  Uninitialized
-  InProgress
-  Completed
-
-  @@map("status")
 }
 
 generator client {
@@ -56,4 +50,27 @@ generator zod {
   useDefaultValidators      = true
   coerceDate                = false
   writeNullishInModelTypes  = true
+}
+
+enum Status {
+  Uninitialized
+  InProgress
+  Completed
+
+  @@map("status")
+}
+
+enum Completed {
+  Completed
+  Uncompleted
+
+  @@map("completed")
+}
+
+enum Type {
+  Text
+  Image
+  Video
+
+  @@map("type")
 }

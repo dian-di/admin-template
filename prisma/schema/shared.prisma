@@ -5,3 +5,18 @@ enum Status {
 
   @@map("status")
 }
+
+enum Completed {
+  Completed
+  Uncompleted
+
+  @@map("completed")
+}
+
+enum Type {
+  Text
+  Image
+  Video
+
+  @@map("type")
+}
