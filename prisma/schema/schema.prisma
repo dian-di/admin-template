@@ -8,18 +8,6 @@ datasource db {
 }
 
 generator zod {
-  provider                  = "zod-prisma-types"
-  useMultipleFiles          = true
-  output                    = "../../src/shared/@generated/zod"
-  writeBarrelFiles          = false
-  createInputTypes          = false
-  createModelTypes          = true
-  addInputTypeValidation    = false
-  addIncludeType            = false
-  addSelectType             = false
-  validateWhereUniqueInput  = false
-  createRelationValuesTypes = true
-  useDefaultValidators      = true
-  coerceDate                = false
-  writeNullishInModelTypes  = true
+  provider = "prisma-zod-generator"
+  output   = "../../src/shared/@generated/zod"
 }

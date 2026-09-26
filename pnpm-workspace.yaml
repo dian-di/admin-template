@@ -2,12 +2,4 @@ allowBuilds:
   '@prisma/engines': true
   esbuild: true
   prisma: true
-
-ignoredBuiltDependencies:
-  - '@prisma/engines'
-
-onlyBuiltDependencies:
-  - '@prisma/client'
-  - '@tailwindcss/oxide'
-  - esbuild
-  - prisma
+  prisma-zod-generator: true

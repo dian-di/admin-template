@@ -7,23 +7,10 @@ model Demo {
   completed   Completed @default(Uncompleted)
   type        Type      @default(Text)
   createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+  updatedAt   DateTime  @default(now()) @map("updated_at")
 
   @@unique([url])
   @@map("demo")
-}
-
-model Entry {
-  id          Int      @id @default(autoincrement())
-  url         String
-  title       String
-  description String?
-  status      Status   @default(Uninitialized)
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @default(now()) @updatedAt @map("updated_at")
-
-  @@unique([url])
-  @@map("entry")
 }
 
 generator client {
@@ -36,20 +23,8 @@ datasource db {
 }
 
 generator zod {
-  provider                  = "zod-prisma-types"
-  useMultipleFiles          = true
-  output                    = "../../src/shared/@generated/zod"
-  writeBarrelFiles          = false
-  createInputTypes          = false
-  createModelTypes          = true
-  addInputTypeValidation    = false
-  addIncludeType            = false
-  addSelectType             = false
-  validateWhereUniqueInput  = false
-  createRelationValuesTypes = true
-  useDefaultValidators      = true
-  coerceDate                = false
-  writeNullishInModelTypes  = true
+  provider = "prisma-zod-generator"
+  output   = "../../src/shared/@generated/zod"
 }
 
 enum Status {

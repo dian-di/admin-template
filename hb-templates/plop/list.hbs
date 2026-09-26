@@ -5,7 +5,7 @@ import { List, useTable } from '@refinedev/antd'
 import { {{#each enumFields}}{{mapName}}{{#unless @last}}, {{/unless}}{{/each}} } from '@/shared/const'
 {{/if}}
 {{#if keys.searchKeys.length}}
-import type { {{pascalCase modelName}} } from '@/shared/@generated/zod/modelSchema/{{pascalCase modelName}}Schema'
+import type { {{pascalCase modelName}} } from '@/shared/@generated/zod/schemas/models/{{pascalCase modelName}}.schema'
 import type { HttpError } from '@refinedev/core'
 import { Button, Form, Input, Space } from 'antd'
 {{/if}}

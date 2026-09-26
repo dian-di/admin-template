@@ -7,7 +7,7 @@ model Demo {
   completed   Completed @default(Uncompleted)
   type        Type      @default(Text)
   createdAt   DateTime  @default(now()) @map("created_at")
-  updatedAt   DateTime  @default(now()) @updatedAt @map("updated_at")
+  updatedAt   DateTime  @default(now()) @map("updated_at")
 
   @@unique([url])
   @@map("demo")

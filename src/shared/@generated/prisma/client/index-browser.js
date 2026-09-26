@@ -132,16 +132,6 @@ exports.Prisma.DemoScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
-exports.Prisma.EntryScalarFieldEnum = {
-  id: 'id',
-  url: 'url',
-  title: 'title',
-  description: 'description',
-  status: 'status',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-};
-
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -174,8 +164,7 @@ exports.Type = exports.$Enums.Type = {
 };
 
 exports.Prisma.ModelName = {
-  Demo: 'Demo',
-  Entry: 'Entry'
+  Demo: 'Demo'
 };
 
 /**

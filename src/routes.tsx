@@ -1,5 +1,5 @@
 import { ErrorComponent } from '@refinedev/antd'
-import { Navigate, Outlet } from 'react-router'
+import { Navigate, Outlet } from 'react-router-dom'
 import type { ZodObject } from 'zod'
 import { DemoEdit, DemoList } from './pages/demo'
 import resources, { defaultRoute } from './resources'

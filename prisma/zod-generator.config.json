@@ -1,0 +1,23 @@
+{
+  "$schema": "../../node_modules/prisma-zod-generator/lib/config/schema.json",
+  "mode": "custom",
+  "pureModels": true,
+  "variants": {
+    "pure": {
+      "enabled": false
+    },
+    "input": {
+      "enabled": false
+    },
+    "result": {
+      "enabled": false
+    }
+  },
+  "naming": {
+    "pureModel": {
+      "schemaSuffix": "",
+      "typeSuffix": "",
+      "exportNamePattern": "{Model}Schema"
+    }
+  }
+}

@@ -14,7 +14,6 @@
     "@refinedev/react-router": "^2.0.4",
     "@refinedev/supabase": "^6.0.2",
     "@supabase/supabase-js": "^2.110.0",
-    "@tailwindcss/vite": "^4.3.2",
     "antd": "^6.5.0",
     "antd-zod": "^8.0.0",
     "camelcase-keys": "^10.0.2",
@@ -23,22 +22,27 @@
     "prisma-case-format": "^2.2.1",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "react-router": "^8.1.0",
+    "react-router": "^7.18.4",
+    "react-router-dom": "^7.18.4",
     "tailwindcss": "^4.3.2",
-    "zod": "^4.4.3",
-    "zod-prisma-types": "^3.3.11"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.2",
+    "@biomejs/biome": "^2.5.14",
+    "@tailwindcss/vite": "^4.3.2",
+    "@types/fs-extra": "^11.0.4",
     "@types/node": "^26.1.0",
     "@types/react": "^19.2.17",
     "@types/react-dom": "^19.2.3",
+    "@types/react-router": "^5.1.20",
     "@vitejs/plugin-react": "^6.0.3",
     "change-case": "^5.4.4",
+    "cross-env": "^10.1.0",
     "dotenv": "^17.4.2",
     "fs-extra": "^11.3.6",
     "handlebars": "^4.7.9",
     "plop": "^4.0.5",
+    "prisma-zod-generator": "^3.3.1",
     "tsx": "^4.22.4",
     "typescript": "^6.0.3",
     "vite": "^8.1.2"
@@ -49,8 +53,8 @@
     "start": "refine start",
     "refine": "refine",
     "format-prisma": "node format-prisma.js",
-    "gene": "cross-env NODE_OPTIONS='--import=tsx' plop --plopfile=scripts/plopfile.ts",
-    "generate:enum-const": "tsx scripts/generate-enum-const.ts",
+    "gene": "cross-env NODE_OPTIONS='--import=tsx' plop --plopfile=scripts/plop/index.ts",
+    "generate:enum-const": "tsx scripts/generate-enum/index.ts",
     "generate": "prisma generate && pnpm generate:enum-const"
   },
   "browserslist": {
@@ -67,6 +71,5 @@
   },
   "resolutions": {
     "esbuild": "0.24.0"
-  },
-  "packageManager": "pnpm@11.9.0"
+  }
 }

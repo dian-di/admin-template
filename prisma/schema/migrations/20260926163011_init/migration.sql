@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "status" AS ENUM ('Uninitialized', 'InProgress', 'Completed');
+
+-- CreateEnum
 CREATE TYPE "completed" AS ENUM ('Completed', 'Uncompleted');
 
 -- CreateEnum

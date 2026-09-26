@@ -12,12 +12,12 @@ admin-template is a React + TypeScript admin app built on Refine with Ant Design
 - **UI framework:** `antd`, `@ant-design/icons`
 - **Styling:** Tailwind CSS via `@tailwindcss/vite`
 - **Data + backend:** `@supabase/supabase-js`, `@refinedev/supabase`
-- **Database tooling:** Prisma, `@prisma/client`, `zod-prisma-types`, `prisma-case-format`
+- **Database tooling:** Prisma, `@prisma/client`, `prisma-zod-generator`, `prisma-case-format`
 - **Validation:** `zod`, `antd-zod`
 - **Utilities:** `camelcase-keys`, `dayjs`
 - **Linting / Formatting:** Biome
 - **Code generation:** Plop via `pnpm gene`
-- **Package manager:** pnpm (`packageManager: pnpm@10.22.0`)
+- **Package manager:** pnpm (`packageManager: pnpm@12`)
 
 ## Code Style and Structure
 
@@ -44,7 +44,7 @@ admin-template is a React + TypeScript admin app built on Refine with Ant Design
 
 - Application data flows through Refine + Supabase: see `src/lib/supabase/dataProvider` and `src/utils/supabaseClient.ts`.
 - Database models live in Prisma schema files under `prisma/schema/`. Use the repo’s Prisma migration and generation workflow before adding forms or queries around a new model.
-- Prisma schema defines both a `prisma-client-js` generator (output in `src/shared/@generated/prisma/client`) and a `zod-prisma-types` generator (output in `src/shared/@generated/zod`).
+- Prisma schema defines both a `prisma-client-js` generator (output in `src/shared/@generated/prisma/client`) and a `prisma-zod-generator` (pure models + enums, output in `src/shared/@generated/zod`; complex options live in `prisma/zod-generator.config.json`).
 - Runtime form/UI schemas in `src/shared/zod/` usually import the generated model schema and then derive create/edit variants by omitting server-managed fields.
 
 ## Local Data Workflow
@@ -77,7 +77,7 @@ Key local references:
 
 ## Code Generation
 
-- `pnpm gene` uses Plop to scaffold page boilerplate from `plop-templates/`.
+- `pnpm gene` uses Plop to scaffold page boilerplate from `hb-templates/plop`.
 - The main generator creates list/edit/index page files under `src/pages/`.
 - It expects the related model/schema plumbing to already exist; generate the Prisma + Zod artifacts first, then scaffold the page layer.
 
